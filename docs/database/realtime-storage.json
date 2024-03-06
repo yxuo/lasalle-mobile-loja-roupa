@@ -1,0 +1,26 @@
+{
+    "products": [
+        {
+            "description": "Regata muito bonita",
+            "name": "Regata",
+            "price": 20.99
+        }
+    ],
+    "sales": [
+        {
+            "craetedAt": 1646260492000,
+            "productId": 1,
+            "quantity": 2,
+            "totalAmount": 39.98,
+            "customerId": "DmnZDHHkWPM18ImLVj54YdmxLgP2"
+        }
+    ],
+    "customers": {
+        "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2": {
+            "name": "Raphael Admin"
+        },
+        "DmnZDHHkWPM18ImLVj54YdmxLgP2": {
+            "name": "Raphael User"
+        }
+    }
+}
