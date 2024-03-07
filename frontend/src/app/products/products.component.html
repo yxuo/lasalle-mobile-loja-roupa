@@ -1,1 +1,22 @@
 <p>products works!</p>
+<div *ngFor="let product of products$ | async">
+    <h2>{{ product.name }}</h2>
+    <!-- <p>{{ product.description }}</p> -->
+    <!-- <p>{{ product.price | currency:'USD':'symbol':'1.2-2' }}</p> -->
+    <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
+    <button (click)="deleteProduct(product.$key)">Delete</button> -->
+</div>
+
+<!-- Add a new product form -->
+<!-- <form (submit)="addProduct(newProductForm.value)">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="newProductForm.value.name" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" [(ngModel)]="newProductForm.value.description" required>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" [(ngModel)]="newProductForm.value.price" required>
+
+    <button type="submit">Add Product</button>
+</form> -->

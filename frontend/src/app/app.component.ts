@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Database } from '@angular/fire/database';
 import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -8,7 +9,10 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent {
   title = 'frontend';
-  constructor(private primengConfig: PrimeNGConfig) { }
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private db: Database,
+  ) { }
 
   ngOnInit() {
     this.primengConfig.ripple = true;

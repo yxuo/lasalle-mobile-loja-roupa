@@ -1,33 +1,32 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { initializeAppCheck, ReCaptchaEnterpriseProvider, provideAppCheck } from '@angular/fire/app-check';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment.development';
-import { AuthComponent } from './auth/auth.component';
-import { DatabaseComponent } from './database/database.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { ProductsComponent } from './products/products.component';
+import { TestComponent } from './test/test.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthComponent,
-    DatabaseComponent,
-    ProductsComponent
+    ProductsComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
+    AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

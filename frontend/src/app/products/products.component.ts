@@ -1,5 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { Database } from '@angular/fire/database';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Product } from './entities/product.entity';
+import { ProductsService } from './services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -7,9 +9,17 @@ import { Database } from '@angular/fire/database';
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
+  products$: Observable<Product[]>;
 
-  private database: Database = inject(Database);
-  constructor() {
+  constructor(private productService: ProductsService) {
+    this.products$ = this.productService.getAll();
   }
 
+  ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.products$ = this.productService.getAll();
+  }
 }
