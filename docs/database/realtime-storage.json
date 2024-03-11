@@ -17,10 +17,16 @@
     ],
     "customers": {
         "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2": {
-            "name": "Raphael Admin"
+            "name": "Raphael",
+            "role": "manager"
         },
         "DmnZDHHkWPM18ImLVj54YdmxLgP2": {
-            "name": "Raphael User"
+            "name": "Pimenta",
+            "role": "seller"
+        },
+        "j4zoaw4kfrR4E6nrVFyyfFjl5Yl2": {
+            "name": "Guilherme",
+            "role": "buyer"
         }
     }
 }
