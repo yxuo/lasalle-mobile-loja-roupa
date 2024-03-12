@@ -1,0 +1,66 @@
+<main class="container">
+
+    <section class="insert">
+        <details>
+            <summary>
+                <h1>Inserir</h1>
+            </summary>
+            <p-card header="Create product"
+                [style]="{ width: '360px',display:'flex','flex-direction':'column',gap:'1rem'}">
+                <div class="input__box">
+                    <span class="p-float-label">
+                        <input pInputText id="name" [(ngModel)]="name" />
+                        <label for="name">Name</label>
+                    </span>
+                    <span class="p-float-label">
+                        <input pInputText id="description" [(ngModel)]="description" />
+                        <label for="description">description</label>
+                    </span>
+                    <span class="p-float-label">
+                        <input pInputText id="price" [(ngModel)]="price" />
+                        <label for="price">price</label>
+                    </span>
+                </div>
+                <p-button [style]="{'margin-top': '2rem'}" label="Save" icon="pi pi-check"
+                    (onClick)="addProduct()"></p-button>
+            </p-card>
+        </details>
+    </section>
+
+    <section class="find">
+
+    </section>
+
+    <section class="list-all">
+        <h1>Produtos</h1>
+        <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText id="price" (input)="onSearchChange($event)" placeholder="Pesquisar" />
+        </span>
+
+        @if (this.valueFilter.length>0) {
+        <div class="product-item" *ngFor="let product of valueFilter">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: {{ product.price }}R$</p>
+            <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
+            <button (click)="deleteProduct(product.$key)">Delete</button> -->
+        </div>
+        }
+        @else if(this.valueFilter===undefined){
+        <div class="product-item" *ngFor="let product of products$ | async">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: {{ product.price }}R$</p>
+            <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
+            <button (click)="deleteProduct(product.$key)">Delete</button> -->
+        </div>
+        }
+        @else{
+            <span>Não encontrou</span>
+        }
+    </section>
+
+</main>
+
+<!-- Add a new product form -->

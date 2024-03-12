@@ -1,12 +1,6 @@
-.toolbar-spacer {
-    flex: 1 1 auto;
-}
-.toolbar-spacer-min {
-    margin-left: 20px;
-}
-.toolbar-title {
-    margin-right: 50px;
-}
-.toolbar-search-input{
-    width: 30vw;
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
 }

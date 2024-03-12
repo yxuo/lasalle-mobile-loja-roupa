@@ -21,29 +21,40 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductsComponent } from './products/products.component';
 import { TestComponent } from './test/test.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProductsComponent } from './views/products/components/products/products.component';
+import { SidebarModule } from 'primeng/sidebar';
+import { CardModule } from 'primeng/card';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductsComponent,
     TestComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    InputTextModule,
     // Material
     MatToolbarModule,
+    CardModule,
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule,
     // PrimeNG
     ToolbarModule,
     ButtonModule,
     SplitButtonModule,
+    SidebarModule,
+    // Others
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
