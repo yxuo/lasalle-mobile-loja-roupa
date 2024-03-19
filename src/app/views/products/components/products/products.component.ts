@@ -12,9 +12,9 @@ export class ProductsComponent {
   newProductForm: any;
   name: string;
   description: string;
-  valueFilter: Product[];
   price: number;
   search: string;
+  searchFilter: Product[] | undefined;
   filtro: Product[] = [];
 
   addProduct() {
@@ -23,7 +23,7 @@ export class ProductsComponent {
       price: this.price,
       description: this.description,
     }
-    console.log(`Criando produto: ${product.name}`);
+    this.productService.insertTest(product);
   }
   products$: Observable<Product[]>;
 
@@ -39,7 +39,7 @@ export class ProductsComponent {
     this.products$ = this.productService.getAll();
     this.productService.getAll().subscribe((data) => {
       this.filtro = data
-      this.valueFilter = data
+      this.searchFilter = data
     })
   }
 
@@ -49,7 +49,7 @@ export class ProductsComponent {
     const valueFilter = search.target as HTMLInputElement;
     const searchText = valueFilter.value;
     console.log(searchText)
-    this.valueFilter = this.filtro.filter((data) => {
+    this.searchFilter = this.filtro.filter((data) => {
       for (const val of Object.values(data)) {
         if (
           val &&
@@ -62,7 +62,7 @@ export class ProductsComponent {
       }
       return false;
     });
-    console.log(this.valueFilter)
+    console.log(this.searchFilter)
   }
 }
 

@@ -5,19 +5,28 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    .list-all{
+
+    .card__product {
+        width: 360px;
         display: flex;
         flex-direction: column;
-        gap: 0.7rem; 
+        gap: 1rem
     }
-    .input__box{
+
+    .list-all {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+
+    .input__box {
         display: flex;
         flex-direction: column;
         gap: 2rem;
     }
 }
 
-.product-item {    
+.product-item {
     background-color: lightgray;
     border-radius: 20px;
     padding: 1rem;

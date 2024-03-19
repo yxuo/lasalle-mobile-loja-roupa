@@ -1,8 +1,25 @@
 <main class="container">
     <div>
         <span>Rivas modas</span>
-        <p-sidebar [(visible)]="sidebarVisible2" position="right">
-            <h3>Right Sidebar</h3>
+        <p-sidebar [style]="{'width':'250px'}" [(visible)]="sidebarVisible2" position="right">
+            <ng-template pTemplate="header">Rafael Rivas</ng-template>
+            <ng-template pTemplate="content">
+                <div class="nav__items">
+                    <span>Home</span>
+                    <span>Products</span>
+                    <span>About</span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="footer__items">
+                    <a routerLink="/signIn">
+                        <p-button label="SignIn" [text]="true" [raised]="true" [plain]="true"></p-button>
+                    </a>
+                    <a routerLink="/signUp">
+                        <p-button label="SignUp" [text]="true" [raised]="true" [plain]="true"></p-button>
+                    </a>
+                </div>
+            </ng-template>
         </p-sidebar>
     </div>
     <i class="pi pi-bars" id="menu__icon" (click)="sidebarVisible2 = true"></i>

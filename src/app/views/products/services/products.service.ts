@@ -21,6 +21,10 @@ export class ProductsService {
       });
   }
 
+  insertTest(product: Product) {
+    this.db.list('products').push(product)
+  }
+
   update(product: Product, key: string) {
     this.db.list('products').update(key, product)
       .catch((error: any) => {

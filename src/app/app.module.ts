@@ -28,6 +28,10 @@ import { SidebarModule } from 'primeng/sidebar';
 import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { SigninComponent } from './views/signin/signin.component';
+import { SignupComponent } from './views/signup/signup.component';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [
@@ -35,6 +39,9 @@ import { InputTextModule } from 'primeng/inputtext';
     ProductsComponent,
     TestComponent,
     NavbarComponent,
+    ProductCardComponent,
+    SigninComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +49,7 @@ import { InputTextModule } from 'primeng/inputtext';
     BrowserAnimationsModule,
     InputTextModule,
     // Material
+    PasswordModule,
     MatToolbarModule,
     CardModule,
     MatIconModule,

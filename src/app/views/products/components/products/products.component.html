@@ -5,8 +5,7 @@
             <summary>
                 <h1>Inserir</h1>
             </summary>
-            <p-card header="Create product"
-                [style]="{ width: '360px',display:'flex','flex-direction':'column',gap:'1rem'}">
+            <p-card header="Create product" class="card__product">
                 <div class="input__box">
                     <span class="p-float-label">
                         <input pInputText id="name" [(ngModel)]="name" />
@@ -38,8 +37,8 @@
             <input pInputText id="price" (input)="onSearchChange($event)" placeholder="Pesquisar" />
         </span>
 
-        @if (this.valueFilter.length>0) {
-        <div class="product-item" *ngFor="let product of valueFilter">
+        @if ((this.searchFilter || []).length>0) {
+        <div class="product-item" *ngFor="let product of searchFilter">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
             <p>Price: {{ product.price }}R$</p>
@@ -47,7 +46,7 @@
             <button (click)="deleteProduct(product.$key)">Delete</button> -->
         </div>
         }
-        @else if(this.valueFilter===undefined){
+        @else if(this.searchFilter===undefined){
         <div class="product-item" *ngFor="let product of products$ | async">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
@@ -57,7 +56,7 @@
         </div>
         }
         @else{
-            <span>Não encontrou</span>
+        <span>Não encontrou</span>
         }
     </section>
 
