@@ -1,5 +1,8 @@
 <main class="container">
-    <p-card header="Create product" class="card__product">
+    <section class="card__product">
+        <section class="title__box">
+            <h1>Login</h1>
+        </section>
         <div class="input__box">
             <span class="p-float-label">
                 <input pInputText id="email" [(ngModel)]="email" />
@@ -7,9 +10,14 @@
             </span>
             <span class="p-float-label">
                 <p-password [(ngModel)]="password" [feedback]="false"></p-password>
-                <label for="password">Password</label>
+                <label for="password">Senha</label>
             </span>
         </div>
-        <p-button [style]="{'margin-top': '2rem'}" label="Save" icon="pi pi-check"></p-button>
-    </p-card>
+        <section class="buttons__box">
+            <span>Não tem conta?<a style="margin-left: 4px;" routerLink="/signUp">Cadastre-se</a></span>
+        </section>
+        <section class="buttons__box">
+            <p-button label="Logar" icon="pi pi-check"></p-button>
+        </section>
+    </section>
 </main>
