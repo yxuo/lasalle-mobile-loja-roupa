@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -32,6 +32,9 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { SigninComponent } from './views/signin/signin.component';
 import { SignupComponent } from './views/signup/signup.component';
 import { PasswordModule } from 'primeng/password';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideHttpClient } from '@angular/common/http';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -70,10 +73,16 @@ import { PasswordModule } from 'primeng/password';
     provideDatabase(() => getDatabase()),
     provideFunctions(() => getFunctions()),
     provideStorage(() => getStorage()),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(),
+    AngularFireAuth,
+    AngularFireModule,
   ],
   bootstrap: [AppComponent]
 })

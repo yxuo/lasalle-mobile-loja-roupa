@@ -16,8 +16,6 @@
         <section class="buttons__box">
             <span>Não tem conta?<a style="margin-left: 4px;" routerLink="/signUp">Cadastre-se</a></span>
         </section>
-        <section class="buttons__box">
-            <p-button label="Logar" icon="pi pi-check"></p-button>
-        </section>
+        <p-button label="Logar" icon="pi pi-check" (click)="sendLogin()"></p-button>
     </section>
 </main>
