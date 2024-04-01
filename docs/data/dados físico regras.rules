@@ -1,0 +1,56 @@
+{
+  "rules": {
+    "products": {
+      // Everyone can see products
+      ".read": "true",
+      // Only sellers can edit products
+      ".write": "
+        auth != null
+        && (root.child('customers').child(auth.uid).child('role').val() === 'seller')
+      "
+    },
+    "log": {
+      "sales": {
+        "$saleId": {
+          // admin and seller can read sales
+          ".read": "
+            (root.child('customers').child(auth.uid).child('role').val() === 'seller')
+            || (root.child('customers').child(auth.uid).child('role').val() === 'admin')
+          ",
+          // client can create sales of itself. Readonly
+          ".write": "
+            !data.exists()
+            && root.child('customers').child(auth.uid).child('role').val() === 'client'
+            && newData.child('customerId').val() === auth.uid
+          ",
+        }
+      }
+    },
+    "customers": {
+      "$customerId": {
+        // Logged users can read itself
+        ".read": "auth.uid === $customerId",
+        // Logger user can create, update, delete itself
+        ".write": "auth.uid === $customerId"
+      }
+    },
+    "payments": {
+      "$paymentId": {
+        // Client users can read its own payments
+        ".read": "
+          root.child('customers').child(auth.uid).child('role').val() === 'client'
+          && root.child('payments').child($paymentId).child('customerId').val() === auth.uid
+        ",
+        // Client users can insert, update, delete its own payments
+        ".write": "
+          root.child('customers').child(auth.uid).child('role').val() === 'client'
+          && root.child('payments').child($paymentId).child('customerId').val() === auth.uid
+        ",
+      }
+    },
+    // No global reads
+    ".read": "false",
+    // No global writes
+    ".write": "false"
+  }
+}
