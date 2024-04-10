@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -17,7 +16,6 @@ export class SigninComponent {
 
   constructor(
     public authService: AuthService,
-    public utilsService: UtilsService,
     public afAuth: AngularFireAuth,
   ) {
     //this.authService.SignOut(true);

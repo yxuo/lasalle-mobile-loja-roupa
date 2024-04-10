@@ -23,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TestComponent } from './test/test.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ProductsComponent } from './views/products/components/products/products.component';
+import { ProductsComponent } from './components/products/products.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';

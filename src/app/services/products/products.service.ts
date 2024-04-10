@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../entities/product.entity';
+import { Product } from '../../models/Product';
 import { list } from '@angular/fire/database';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable, map } from 'rxjs';
-import { DeepPartial } from '../../../types/deep-partial.type';
+import { DeepPartial } from '../../types/deep-partial.type';
 
 @Injectable({
   providedIn: 'root'

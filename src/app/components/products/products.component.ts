@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../../entities/product.entity';
-import { ProductsService } from '../../services/products.service';
+import { Product } from '../../models/Product';
+import { ProductsService } from '../../services/products/products.service';
 
 @Component({
   selector: 'app-products',
@@ -19,9 +19,9 @@ export class ProductsComponent {
 
   addProduct() {
     const product: Product = {
-      name: this.name,
-      price: this.price,
-      description: this.description,
+      nome: this.name,
+      preco: this.price,
+      descricao: this.description,
     }
     this.productService.insertTest(product);
   }

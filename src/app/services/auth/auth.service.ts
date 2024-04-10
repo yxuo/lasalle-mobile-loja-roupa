@@ -3,10 +3,9 @@ import { Inject, Injectable, signal } from '@angular/core';
 import { getAuth, getIdToken } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { isDefined, removeStorage, setStorage } from './utils/utils';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../interfaces/user.interface';
+import { User } from '../../models/User';
 
 interface user {
   email: string, password: string
@@ -77,7 +76,7 @@ export class AuthService {
       .then(result => {
         const userInfo: any = result.user?.toJSON()
         console.log(userInfo.uid)
-        setStorage('user', userInfo.uid);
+        localStorage.setItem('user', JSON.stringify(userInfo.uid));
         // this.afAuth.authState.subscribe(async (user: any) => {
         //   if (user) {
         //     this.router.navigate(['']);
