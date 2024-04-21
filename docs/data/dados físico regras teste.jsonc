@@ -1,0 +1,27 @@
+{
+    "produto": {
+        "// sucesso": {
+            "nome": "Calça jeans",
+            "descricao": "Calça bonita",
+            "preco": 1.99,
+            "idFornecedor": "cnpj1",
+            "imagens": [
+                "img1"
+            ]
+        }
+    },
+    "cliente":{
+        "// sucesso": {
+"nome": "Gabriel",
+"tipo": "cliente",
+"cpf": "1234",
+"endereco": {
+"rua": "Rua Mario Alves",
+"numero": 103,
+"complemento": "apto 201",
+"uf": "RJ",
+"cep": "11222333"
+}
+        }
+    }
+}
