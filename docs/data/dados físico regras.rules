@@ -5,36 +5,63 @@
     // Sem escrita global
     ".write": "false",
 
-    "cliente": {
-      "$idCliente": {
+    "usuario": {
+      "$idUsuario": {
         ".read": "
           // Qualquer usuário pode ler a si mesmo
-          auth.uid === $idCliente
+          auth.uid === $idUsuario
           // Funcionários podem ver clientes
           || (
-              root.child('cliente').child(auth.uid).child('tipo').val() === 'funcionario'
-              && root.child('cliente').child($idCliente).child('tipo').val() === 'cliente'
+              root.child('usuario').child(auth.uid).child('tipo').val() === 'funcionario'
+              && data.child('tipo').val() === 'cliente'
             )
           // Gerentes podem ver qualquer usuário
-          || root.child('cliente').child(auth.uid).child('tipo').val() === 'gerente'
+          || root.child('usuario').child(auth.uid).child('tipo').val() === 'gerente'
         ",
-        // Usuários podem editar a si mesmos
-        ".write": "auth.uid === $idCliente",
-        // Campos obrigatórios ao criar. endereco: obrigatório para cliente.
+        ".write": "
+        	// Usuários não existentes podem criar a si mesmos como cliente
+        	(
+            auth.uid === $idUsuario
+            && !data.exists()
+            && newData.child('tipo').val() === 'cliente'
+        	)
+        	// Clientes podem editar a si mesmos
+        	|| (
+            auth.uid === $idUsuario
+            && data.child('tipo').val() === 'cliente'
+            && newData.child('tipo').val() === 'cliente'
+        	)
+        	// Gerentes podem criar ou editar gerentes e funcionários
+        	|| (
+            root.child('usuario').child(auth.uid).child('tipo').val() === 'gerente'
+            && (!data.exists() || data.child('tipo').val().matches(/^gerente|funcionario$/))
+            && newData.child('tipo').val().matches(/^gerente|funcionario$/)
+        	)
+        ",
         ".validate": "
-          root.child('cliente').child($idCliente).exists()
-          || newData.hasChildren(['nome', 'tipo', 'cpf', 'endereco'])
+        // Campos obrigatórios para cliente
+        (
+          root.child('usuario').child(auth.uid).child('tipo').val() === 'cliente'
+        	&& newData.hasChildren(['nome', 'tipo', 'cpf', 'endereco'])
+        )
+        // Campos obrigatórios para não-cliente
+        || (
+          root.child('usuario').child(auth.uid).child('tipo').val() !== 'cliente'
+        	&& newData.hasChildren(['nome', 'tipo', 'cpf'])
+        )
         ",
         // nome: string, preenchido
         "nome": {
           ".validate": "newData.isString() && newData.val() !== ''"
         },
-        // tipo: enum(cliente, funcionario, gerente)
         "tipo": {
           ".validate": "
-          	newData.val() == 'cliente'
-          	|| newData.val() == 'funcionario'
-          	|| newData.val() == 'gerente'
+          	// tipo: enum(cliente, funcionario, gerente)
+          	(
+            	newData.val() == 'cliente'
+            	|| newData.val() == 'funcionario'
+            	|| newData.val() == 'gerente'
+          	)
           "
         },
         // cpf: string(int(11))
@@ -42,9 +69,9 @@
           ".validate": "newData.isString() && newData.val().matches(/^[0-9]{11}$/)"
         },
         "endereco": {
-          // Campos obrigatórios ao criar
+          // Campos obrigatórios ao criar cliente
           ".validate": "
-            root.child('cliente').child($idCliente).child('endereco').exists()
+            root.child('usuario').child($idUsuario).child('endereco').exists()
             || newData.hasChildren(['rua', 'numero', 'complemento', 'uf', 'cep'])
           ",
           // rua: string, preenchido
@@ -63,99 +90,165 @@
           "uf": {
             ".validate": "
                 newData.isString() 
-            		&& newData.val().matches(/^[AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|MS|MT|PE|PI|PR|RJ|RN|RO|RR|SC|SE|SP|TO]$/)"
+                && newData.val().matches(/^AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|MS|MT|PE|PI|PR|RJ|RN|RO|RR|SC|SE|SP|TO$/)"
           },
           // cep: stringInt(8)
           "cep": {
             ".validate": "
                 newData.isString() 
-            		&& newData.val().matches(/^[0-9]{8}$/)
+                && newData.val().matches(/^[0-9]{8}$/)
               "
           },
         }
-      }
-    },
-    "payments": {
-      "$paymentId": {
-        // Client users can read its own payments
-        ".read": "
-          root.child('cliente').child(auth.uid).child('role').val() === 'client'
-          && root.child('payments').child($paymentId).child('idCliente').val() === auth.uid
-        ",
-        // Client users can insert, update, delete its own payments
-        ".write": "
-          root.child('cliente').child(auth.uid).child('role').val() === 'client'
-          && root.child('payments').child($paymentId).child('idCliente').val() === auth.uid
-        ",
       }
     },
     "produto": {
       // Todos podem ver produtos
       ".read": "true",
       "$sku": {
-        // Apenas funcionários podem editar produtos (CRUD)
+        // Apenas funcionários podem criar ou editar produtos
         ".write": "
-          auth != null
-          && (root.child('cliente').child(auth.uid).child('tipo').val() === 'funcionario')
+        	root.child('usuario').child(auth.uid).child('tipo').val() === 'funcionario'
+        	&& newData.exists()
         ",
-        // Campos obrigatórios ao criar
-        ".validate": "
-          root.child('produto').child($sku).exists()
-          || newData.hasChildren(['nome', 'descricao', 'preco', 'idFornecedor', 'imagens'])
-        ",
-
+        // Campos obrigatórios
+        ".validate": "newData.hasChildren(['nome', 'descricao', 'preco', 'idFornecedor', 'imagens', 'ativo'])",
         // nome: string preenchido
         "nome": {
           ".validate": "newData.isString() && newData.val() != ''"
         },
-
         // descricao: string preenchido
         "descricao": {
           ".validate": "newData.isString() && newData.val() != ''"
         },
-
         // preco: float >= 0
         "preco": {
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
-
         // fornecedor: string, existente
         "idFornecedor": {
-          ".validate": "newData.isString() && root.child('fornecedor').hasChild(newData.val())"
+          ".validate": "root.child('fornecedor').hasChild(newData.val())"
         },
-
         // imagens: base64(png, jpeg, webp)[]
         "imagens": {
           ".validate": "newData.hasChildren()",
           "$imagem": {
             ".validate": "
-            	newData.isString()
-            	&& (
-              	newData.val().beginsWith('i') // png
+              newData.isString()
+              && (
+                newData.val().beginsWith('i') // png
                 || newData.val().beginsWith('R') // jpeg
                 || newData.val().beginsWith('U') // webp
               )
             "
           }
+        },
+        // ativo: boolean
+        "ativo": {
+          ".validate": "newData.isBoolean()"
+        },
+      }
+    },
+    "fornecedor": {
+      // Gerentes podem ler qualquer fornecedor
+      ".read": "root.child('usuario').child(auth.uid).child('tipo').val() === 'gerente'",
+      "$cnpjFornecedor": {
+        ".write": "
+        	// Gerentes podem criar ou alterar fornecedor
+          root.child('usuario').child(auth.uid).child('tipo').val() === 'gerente'
+          && (!data.exists() || newData.exists())
+        	// id deve ser CNPJ
+        	&& $cnpjFornecedor.matches(/^[0-9]{14}$/)
+        ",
+        // Campos obrigatórios
+        ".validate": "newData.hasChildren(['nome'])",
+        // nome: string
+        "nome": {
+          ".validate": "newData.isString()"
         }
       }
     },
 
     // Tabelas de log
     "log": {
-      "sales": {
-        "$saleId": {
-          // admin and seller can read sales
-          ".read": "
-            (root.child('cliente').child(auth.uid).child('role').val() === 'seller')
-            || (root.child('cliente').child(auth.uid).child('role').val() === 'admin')
-          ",
-          // client can create sales of itself. Readonly
+      "venda": {
+        "$idVenda": {
+          // Funcionários e Gerentes podem ler venda
+          ".read": "root.child('usuario').child(auth.uid).child('tipo').val().matches(/^funcionario|gerente$/)",
+          // Clientes podem criar ou editar uma venda
           ".write": "
-            !data.exists()
-            && root.child('cliente').child(auth.uid).child('role').val() === 'client'
-            && newData.child('idCliente').val() === auth.uid
+          	root.child('usuario').child(auth.uid).child('tipo').val() === 'cliente'
+          	&& newData.exists()
+          ", 
+          ".validate": "
+          	// idVenda: int >= 0
+            $idVenda.matches(/^[0-9]+$/)
+          	// Campos obrigatórios
+          	&& newData.hasChildren(['data', 'valorTotal', 'idUsuario', 'status'])
+          	// Vendas usadas não podem ser editadas
+          	&& data.child('status').val() !== 'usado'
           ",
+          // data: Unix timestamp <= agora
+          "data":{
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          },
+          // valorTotal: número >= 0
+          "valorTotal": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          // idUsuario: FK de cliente deve ser a si mesmo
+          "idUsuario": {
+            ".validate": "auth.uid === newData.val()"
+          },
+          // status: enum
+          "status": {
+            ".validate": "
+            	// Cria como criado
+            	(!data.exists() && newData.val() === 'criado')
+            	// Pode editar como criado ou usado
+              || newData.val().matches(/^criado|usado$/)
+            "
+          }
+        }
+      },
+
+      "itemVenda": {
+        "$idItemVenda": {
+          // Funcionários e Gerentes podem ler venda
+          ".read": "
+            (root.child('usuario').child(auth.uid).child('tipo').val() === 'funcionario')
+            || (root.child('usuario').child(auth.uid).child('tipo').val() === 'gerente')
+          ",
+          // Usuários podem criar um itemVenda
+          ".write": "
+          	root.child('usuario').child(auth.uid).child('tipo').val() === 'cliente'
+          	&& !data.exists()
+          ",
+          ".validate": "
+          	// id >= 0
+            $idItemVenda.matches(/^[0-9]+$/)
+          	// Campos obrigatórios
+            && newData.hasChildren(['idVenda', 'idProduto', 'precoUnitario', 'quantidade'])
+          ",
+          // idVenda: mesmo usuário e status criado
+          "idVenda": {
+            ".validate": "
+            	root.child('log').child('venda').child(newData.val()).child('idUsuario').val() === auth.uid
+              && root.child('log').child('venda').child(newData.val()).child('status').val() === 'criado'
+            "
+          },
+          // idProduto (sku): produto ativo
+          "idProduto": {
+            ".validate": "root.child('produto').child(newData.val()).child('ativo').val() === true"
+          },
+          // precoUnitario: número >= 0
+          "precoUnitario": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          // quantidade: int > 0
+          "quantidade": {
+            ".validate": "newData.isNumber() && newData.val() % 1 === 0.0 && newData.val() > 0"
+          }
         }
       }
     },

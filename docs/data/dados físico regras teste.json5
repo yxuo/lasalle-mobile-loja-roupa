@@ -1,0 +1,65 @@
+{
+    "cliente": {
+        "// sucesso": {
+            "cliente": {
+                "$id": "04KyBqBnHegm20KUy7JSRNh6gpJ2",
+"nome": "Gabriel",
+"tipo": "cliente",
+"cpf": "12345678901",
+"endereco": {
+"rua": "Rua Mario Alves",
+"numero": 103,
+"complemento": "apto 201",
+"uf": "RJ",
+"cep": "11222333"
+}
+            },
+            "funcionario": {
+                "$id": "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2", // gerente
+"nome": "Gabriel",
+"tipo": "gerente",
+"cpf": "223456789012"
+            },
+            "gerente": {
+                "$id": "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2", // gerente
+"nome": "Gabriel",
+"tipo": "gerente",
+"cpf": "223456789012"
+            }
+        }
+    },
+    "produto": {
+        "// sucesso": {
+            "idUsuario": "DmnZDHHkWPM18ImLVj54YdmxLgP2", // funcionario
+"nome": "Calça jeans",
+"descricao": "Calça bonita",
+"preco": 1.99,
+"idFornecedor": "cnpj1",
+"imagens": ["i png image"]
+        }
+    },
+    "fornecedor": {
+        "// sucesso": {
+            "$idGerente": "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2",
+            "nome": "Calça jeans"
+        }
+    },
+    "venda": {
+        "// sucesso": {
+            "idUsuario": "04KyBqBnHegm20KUy7JSRNh6gpJ2", // cliente
+"data": 1646260492001,
+"valorTotal": 1.99,
+"idUsuario": "04KyBqBnHegm20KUy7JSRNh6gpJ2",
+"status": "criado"
+        }
+    },
+    "itemVenda": {
+        "// sucesso": {
+            "idUsuario": "04KyBqBnHegm20KUy7JSRNh6gpJ2", // cliente
+"idVenda": 2,
+"idProduto": "sku1",
+"precoUnitario": 1.99,
+"quantidade": 1
+        }
+    },
+}
