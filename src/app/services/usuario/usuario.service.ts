@@ -2,13 +2,20 @@ import { Injectable } from '@angular/core';
 import { Fornecedor } from '../../models/Fornecedor';
 import { Usuario } from '../../models/Usuario';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
+  private userSubject = new Subject<string>();
+  user$ = this.userSubject.asObservable();
+
   constructor(private db: AngularFireDatabase) {}
+
+  setFornecedor(value: string): void {
+    this.userSubject.next(value);
+  }
 
   insert(uuid: string, usuario: Usuario) {
     console.log('INSERT USUARIO', usuario);

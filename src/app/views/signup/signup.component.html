@@ -41,6 +41,13 @@
                 <label for="senha">Senha</label>
             </span>
         </div>
+        @if(authRole==='gerente'){
+            <select id="fornecedor" [(ngModel)]="tipo">
+                <option value="" selected disabled hidden>Tipo</option>
+                <option value="gerente">Gerente</option>
+                <option value="funcionario">Funcionario</option>
+            </select>
+        }
         <section class="buttons__box">
             <span>Possui conta?<a style="margin-left: 4px;" routerLink="/signIn">Login</a></span>
         </section>

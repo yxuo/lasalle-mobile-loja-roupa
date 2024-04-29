@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Observable, catchError, map, of } from 'rxjs';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { User } from 'firebase/auth';
+import { Endereco, TipoUsuario } from '../../models/Usuario';
 
 @Component({
   selector: 'app-signup',
@@ -22,12 +23,20 @@ export class SignupComponent {
   uf: string = '';
   rua: string = '';
   senha: string = '';
+  authRole: string = '';
+  tipo: string = 'cliente';
 
   constructor(
     private afAuth: AngularFireAuth,
     private authService: AuthService,
     private usuarioService: UsuarioService
   ) {}
+
+  ngOnInit(): void {
+    if (localStorage.getItem('role') !== null) {
+      this.authRole = localStorage.getItem('role') || '';
+    }
+  }
 
   async finderInformationsCep(event: Event) {
     const ev = event.target as HTMLInputElement;
@@ -47,21 +56,23 @@ export class SignupComponent {
       .createUserWithEmailAndPassword(email, password)
       .then(async (res) => {
         console.log(res.user);
-        // Logar
-        const user = await this.authService.login(this.email, this.senha);
-        // Inserir Usuario
+      await this.authService.login(this.email, this.senha);
+        const endereco: Endereco | undefined =
+          this.authRole === 'gerente'
+            ? undefined
+            : {
+                cep: this.cep,
+                numero: Number(this.numero),
+                complemento: this.complemento,
+                rua: this.rua,
+                uf: this.uf,
+              }
         if (res.user !== null) {
           this.usuarioService.insert(res.user.uid, {
             cpf: this.cpf,
             nome: this.nome,
-            endereco: {
-              cep: this.cep,
-              numero: Number(this.numero),
-              complemento: this.complemento,
-              rua: this.rua,
-              uf: this.uf,
-            },
-            tipo: 'cliente',
+            endereco,
+            tipo: this.tipo as TipoUsuario,
           });
         }
       })

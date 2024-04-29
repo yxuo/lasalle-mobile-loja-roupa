@@ -1,47 +1,85 @@
 <main class="container">
-    <div>
-        <span>Rivas modas</span>
-        <p-sidebar [style]="{'width':'250px'}" [(visible)]="sidebarVisible" position="right">
-            <ng-template pTemplate="header">Rafael Rivas</ng-template>
-            <ng-template pTemplate="content">
-                <div class="nav__items">
-                    <h5>Cliente</h5>
-                    <div><a href="/products" routerLinkActive="active">Consultar produtos</a></div>
-                    <div><a href="/products/insert" routerLinkActive="active">Cadastrar produto</a></div>
-                    <div><a href="/supplier" routerLinkActive="active">Consultar fornecedores</a></div>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="footer">
-                <div class="footer__items">
-                    @if (isUserLogged) {
-                    <a>
-                        <p-button (onClick)="handleLogout()" label="Perfil" [text]="true" [raised]="true"
-                            [plain]="true"></p-button>
-                    </a>
-                    <a>
-                        <p-button (onClick)="handleLogout()" label="Logout" [text]="true" severity="danger"
-                            [raised]="true" [plain]="true"></p-button>
-                    </a>
-                    @if(tipoUsuario === 'gerente'){
-                        <a routerLink="/signUp">
-                            <p-button label="Cadastrar gerente ou usuário" onclick="toggleSidebar()" [text]="true" [raised]="true"
-                                [plain]="true"></p-button>
-                        </a>
-                    }
-                    } @else {
-                    <a routerLink="/signIn">
-                        <p-button label="Entrar" onclick="toggleSidebar()" [text]="true" [raised]="true"
-                            [plain]="true"></p-button>
-                    </a>
-                    <a routerLink="/signUp">
-                        <p-button label="Cadastrar" onclick="toggleSidebar()" [text]="true" [raised]="true"
-                            [plain]="true"></p-button>
-                    </a>
-                    }
-                </div>
-            </ng-template>
-        </p-sidebar>
-
-    </div>
-    <i class="pi pi-bars" id="menu__icon" (click)="toggleSidebar()"></i>
+  <div>
+    <span>Rivas modas</span>
+    <p-sidebar
+      [style]="{ width: '250px' }"
+      [(visible)]="sidebarVisible"
+      position="right"
+    >
+      <ng-template pTemplate="header">Rafael Rivas</ng-template>
+      <ng-template pTemplate="content">
+        <div class="nav__items">
+          <h5>Cliente</h5>
+          <div>
+            <a href="/products" routerLinkActive="active">Consultar produtos</a>
+          </div>
+          <div>
+            <a href="/products/insert" routerLinkActive="active"
+              >Cadastrar produto</a
+            >
+          </div>
+          <div>
+            <a href="/supplier" routerLinkActive="active"
+              >Consultar fornecedores</a
+            >
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="footer__items">
+          @if (isUserLogged) { @if(authRole === 'gerente'){
+          <a routerLink="/signUp">
+            <p-button
+              label="Cadastrar usuario"
+              onclick="toggleSidebar()"
+              [text]="true"
+              [raised]="true"
+              [plain]="true"
+            ></p-button>
+          </a>
+          }
+          <a>
+            <p-button
+              (onClick)="handleLogout()"
+              label="Perfil"
+              [text]="true"
+              [raised]="true"
+              [plain]="true"
+            ></p-button>
+          </a>
+          <a>
+            <p-button
+              (onClick)="handleLogout()"
+              label="Logout"
+              [text]="true"
+              severity="danger"
+              [raised]="true"
+              [plain]="true"
+            ></p-button>
+          </a>
+          } @else {
+          <a routerLink="/signIn">
+            <p-button
+              label="Entrar"
+              onclick="toggleSidebar()"
+              [text]="true"
+              [raised]="true"
+              [plain]="true"
+            ></p-button>
+          </a>
+          <a routerLink="/signUp">
+            <p-button
+              label="Cadastrar"
+              onclick="toggleSidebar()"
+              [text]="true"
+              [raised]="true"
+              [plain]="true"
+            ></p-button>
+          </a>
+          }
+        </div>
+      </ng-template>
+    </p-sidebar>
+  </div>
+  <i class="pi pi-bars" id="menu__icon" (click)="toggleSidebar()"></i>
 </main>

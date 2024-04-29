@@ -11,7 +11,7 @@ import { TipoUsuario } from '../../models/Usuario';
 export class NavbarComponent {
   sidebarVisible: boolean = false;
   isUserLogged: boolean = false;
-  tipoUsuario: TipoUsuario | null = null;
+  authRole: string = '';
 
   constructor(
     private authService: AuthService,
@@ -19,9 +19,8 @@ export class NavbarComponent {
   ) {}
 
   ngOnInit(): void {
-    this.isUserLogged = this.authService.isLoggedIn;
-    const role = localStorage.getItem('role');
-    this.tipoUsuario = role ? role as TipoUsuario : null;
+    this.isUserLogged = this.authService.isLoggedIn;    
+    this.authRole = localStorage.getItem('role') || '';
   }
 
   handleLogout() {
