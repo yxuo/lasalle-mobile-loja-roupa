@@ -81,6 +81,7 @@ export class ProductsComponent {
       descricao: this.newProdutoDescricao,
       idFornecedor: this.newProdutoIdFornecedor,
       imagens: this.newProdutoImagensBase64,
+      ativo: true,
     };
     this.produtoService.insert(newProduto);
   }

@@ -14,3 +14,5 @@
   - [x] Fornecedor
   - [x] Venda
   - [x] ItemVenda
+- [x] Insert produto
+- [ ] 

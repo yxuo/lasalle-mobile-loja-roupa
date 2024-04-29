@@ -18,6 +18,7 @@ export class ProdutoService {
   ) {}
 
   insert(product: Produto) {
+    console.log("INSERT PROD", product)
     this.db
       .list('produto')
       .push(product)

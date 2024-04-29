@@ -6,6 +6,7 @@ export interface Produto {
   preco: number;
   imagens?: string[];
   idFornecedor: string;
+  ativo: boolean;
 }
 
 export interface ProdutoObservable {

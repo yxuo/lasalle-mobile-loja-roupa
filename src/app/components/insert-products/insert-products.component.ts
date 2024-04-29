@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Produto } from '../../models/Produto';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -8,6 +8,7 @@ import { FornecedorObs } from '../../models/Fornecedor';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-insert-products',
@@ -31,6 +32,7 @@ export class InsertProductsComponent {
     private fornecedorService: FornecedorService,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
+    private messageService: MessageService,
     private db: AngularFireDatabase
   ) {}
 
@@ -71,14 +73,31 @@ export class InsertProductsComponent {
 
   addProduct() {
     console.log(this.newProdutoIdFornecedor);
-    const newProduto: Produto = {
-      nome: this.newProdutoNome,
-      preco: this.newProdutoPreco,
-      descricao: this.newProdutoDescricao,
-      idFornecedor: this.newProdutoIdFornecedor,
-      imagens: this.newProdutoImagensBase64,
-    };
-    this.produtoService.insert(newProduto);
+    try {
+      this.newProdutoPreco = Number(
+        this.newProdutoPreco.toString().replaceAll(',', '.')
+      );
+      const newProduto: Produto = {
+        nome: this.newProdutoNome,
+        preco: this.newProdutoPreco,
+        descricao: this.newProdutoDescricao,
+        idFornecedor: this.newProdutoIdFornecedor,
+        imagens: this.newProdutoImagensBase64,
+        ativo: true,
+      };
+      this.produtoService.insert(newProduto);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Sucesso',
+        detail: 'Produto cadastrado com sucesso',
+      });
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Preencha todos os campos do formulario',
+      });
+    }
   }
 
   onFileChange(event: any) {

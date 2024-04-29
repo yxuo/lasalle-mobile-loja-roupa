@@ -1,6 +1,6 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { ToastModule } from 'primeng/toast';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -33,12 +33,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideHttpClient } from '@angular/common/http';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 // PrimeNG
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
 import { InsertProductsComponent } from './components/insert-products/insert-products.component';
+import { InsertFornecedorComponent } from './components/insert-fornecedor/insert-fornecedor.component';
 
 
 @NgModule({
@@ -51,6 +53,7 @@ import { InsertProductsComponent } from './components/insert-products/insert-pro
     SigninComponent,
     SignupComponent,
     InsertProductsComponent,
+    InsertFornecedorComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { InsertProductsComponent } from './components/insert-products/insert-pro
     // PrimeNG
     ToolbarModule,
     ButtonModule,
+    ToastModule,
     SplitButtonModule,
     SidebarModule,
     FileUploadModule,
@@ -91,6 +95,7 @@ import { InsertProductsComponent } from './components/insert-products/insert-pro
     provideHttpClient(),
     AngularFireAuth,
     AngularFireModule,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
