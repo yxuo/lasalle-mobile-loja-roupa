@@ -1,7 +1,7 @@
 <main class="container">
     <div>
         <span>Rivas modas</span>
-        <p-sidebar [style]="{'width':'250px'}" [(visible)]="sidebarVisible2" position="right">
+        <p-sidebar [style]="{'width':'250px'}" [(visible)]="sidebarVisible" position="right">
             <ng-template pTemplate="header">Rafael Rivas</ng-template>
             <ng-template pTemplate="content">
                 <div class="nav__items">
@@ -12,15 +12,22 @@
             </ng-template>
             <ng-template pTemplate="footer">
                 <div class="footer__items">
+                @if (isUserLogged) {
                     <a routerLink="/signIn">
-                        <p-button label="SignIn" [text]="true" [raised]="true" [plain]="true"></p-button>
+                        <p-button label="Login" [text]="true" [raised]="true" [plain]="true"></p-button>
                     </a>
                     <a routerLink="/signUp">
-                        <p-button label="SignUp" [text]="true" [raised]="true" [plain]="true"></p-button>
+                        <p-button label="Register" [text]="true" [raised]="true" [plain]="true"></p-button>
                     </a>
+                } @else {
+                    <a routerLink="/signIn">
+                        <p-button label="Logout" [text]="true" [raised]="true" [plain]="true"></p-button>
+                    </a>
+                }
                 </div>
             </ng-template>
         </p-sidebar>
+        
     </div>
-    <i class="pi pi-bars" id="menu__icon" (click)="sidebarVisible2 = true"></i>
+    <i class="pi pi-bars" id="menu__icon" (click)="toggleSidebar()"></i>
 </main>

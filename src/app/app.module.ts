@@ -15,9 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { ButtonModule } from 'primeng/button';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { ToolbarModule } from 'primeng/toolbar';
 import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +32,14 @@ import { PasswordModule } from 'primeng/password';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideHttpClient } from '@angular/common/http';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+// PrimeNG
+import { ButtonModule } from 'primeng/button';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DropdownModule } from 'primeng/dropdown';
+import { InsertProductsComponent } from './components/insert-products/insert-products.component';
+
 
 @NgModule({
   declarations: [
@@ -45,6 +50,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
     ProductCardComponent,
     SigninComponent,
     SignupComponent,
+    InsertProductsComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +71,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
     ButtonModule,
     SplitButtonModule,
     SidebarModule,
+    FileUploadModule,
+    DropdownModule,
     // Others
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),

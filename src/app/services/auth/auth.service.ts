@@ -5,21 +5,17 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../../models/User';
-
-interface user {
-  email: string, password: string
-}
+import { AuthUser } from '../../models/AuthUser';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private dataSourceSubject = new BehaviorSubject<any>({});
   dataSource$ = this.dataSourceSubject.asObservable();
-  users: user;
+  users: AuthUser;
 
-  setDataSource(value: user): void {
+  setDataSource(value: AuthUser): void {
     this.login(value.email, value.password);
     this.dataSourceSubject.next(value);
   }
@@ -31,7 +27,7 @@ export class AuthService {
     private http: HttpClient,
     public afAuth: AngularFireAuth,
     public router: Router,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private document: Document
   ) {
     const localStorage = document.defaultView?.localStorage;
     // this.afAuth.authState.subscribe(async (user: any) => {
@@ -58,10 +54,10 @@ export class AuthService {
   }
 
   async authFirebase() {
-    this.afAuth.authState.subscribe(user => {
-      const use = user?.getIdToken(true)
-      console.log("auth:", use)
-    })
+    this.afAuth.authState.subscribe((user) => {
+      const use = user?.getIdToken(true);
+      console.log('auth:', use);
+    });
   }
 
   get isLoggedIn(): boolean {
@@ -70,12 +66,12 @@ export class AuthService {
     return user !== null;
   }
 
-  login(email: string, password: string) {
+  async login(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then(result => {
-        const userInfo: any = result.user?.toJSON()
-        console.log(userInfo.uid)
+      .then((result) => {
+        const userInfo: any = result.user?.toJSON();
+        console.log(userInfo.uid);
         localStorage.setItem('user', JSON.stringify(userInfo.uid));
         // this.afAuth.authState.subscribe(async (user: any) => {
         //   if (user) {
@@ -88,29 +84,31 @@ export class AuthService {
       });
   }
 
-  public signUp(email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result: any) => {
-        return { type: 'ok', data: JSON.parse(JSON.stringify(result)) };
-      })
-      .catch((error: any) => {
-        return { type: 'error', error: JSON.parse(JSON.stringify(error)) };
-      });
+  public async signUp(email: string, password: string) {
+    try {
+      const result = await this.afAuth
+        .createUserWithEmailAndPassword(email, password);
+      return { type: 'ok', data: JSON.parse(JSON.stringify(result)) };
+    } catch (error) {
+      return { type: 'error', error: JSON.parse(JSON.stringify(error)) };
+    }
   }
 
   // Reset Forggot password
-  ForgotPassword(passwordResetEmail: string) {
+  async ForgotPassword(passwordResetEmail: string) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        return { type: 'ok', message: 'Please check your email. We\'ve just sent a link to reset your password' };
+        return {
+          type: 'ok',
+          message:
+            "Please check your email. We've just sent a link to reset your password",
+        };
       })
       .catch((error: any) => {
         return { type: 'error', message: error };
       });
   }
-
 
   // Sign out
   SignOut(redirect: boolean) {
@@ -118,8 +116,7 @@ export class AuthService {
       this.afAuth.signOut().then(() => {
         localStorage.removeItem('user');
         localStorage.removeItem('claims');
-        if (redirect)
-          this.router.navigate(['login']);
+        if (redirect) this.router.navigate(['login']);
 
         resolve(true);
       });
@@ -127,13 +124,12 @@ export class AuthService {
   }
 
   async getToken() {
-    const auth = getAuth()
-    const { currentUser } = auth
+    const auth = getAuth();
+    const { currentUser } = auth;
     if (currentUser) {
       const token = await getIdToken(currentUser, true);
       return token;
     }
-
     return null;
   }
 
@@ -145,8 +141,7 @@ export class AuthService {
       let data = {};
       return data;
     } else {
-      throw ('No valid token')
+      throw 'No valid token';
     }
   }
-
 }
