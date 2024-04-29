@@ -4,8 +4,10 @@ import { getAuth, getIdToken } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { AuthUser } from '../../models/AuthUser';
+import { Usuario } from '../../models/Usuario';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +16,8 @@ export class AuthService {
   private dataSourceSubject = new BehaviorSubject<any>({});
   dataSource$ = this.dataSourceSubject.asObservable();
   users: AuthUser;
-
-  setDataSource(value: AuthUser): void {
-    this.login(value.email, value.password);
-    this.dataSourceSubject.next(value);
-  }
-
+  usersInfo: Usuario;
+  user: any;
   userData = signal<any>(null);
   message: any = null;
 
@@ -27,30 +25,15 @@ export class AuthService {
     private http: HttpClient,
     public afAuth: AngularFireAuth,
     public router: Router,
+    private db: AngularFireDatabase,
     @Inject(DOCUMENT) private document: Document
   ) {
     const localStorage = document.defaultView?.localStorage;
-    // this.afAuth.authState.subscribe(async (user: any) => {
-    //   if (localStorage) {
-    //     if (user) {
-    //       let userTokenData: any = await user.getIdTokenResult();
-    //       setStorage('user', user);
-    //       setStorage('claims', userTokenData.claims);
-    //       localStorage.setItem('user', JSON.stringify(user));
-    //       localStorage.setItem('claims', JSON.stringify(userTokenData.claims));
-    //       console.log('LS 1', localStorage)
-    //       this.userData.set(JSON.parse(localStorage?.getItem('user')!));
-    //     } else {
-    //       setStorage('user', '');
-    //       setStorage('claims', '');
-    //       console.log('LS 2', localStorage)
-    //       localStorage.setItem('user', '');
-    //       localStorage.setItem('claims', '');
-    //       this.userData.set(null);
-    //     }
-    //   }
-    // });
-    // this.authFirebase()
+  }
+
+  setDataSource(value: AuthUser): void {
+    this.login(value.email, value.password);
+    this.dataSourceSubject.next(value);
   }
 
   async authFirebase() {
@@ -71,23 +54,31 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         const userInfo: any = result.user?.toJSON();
-        console.log(userInfo.uid);
         localStorage.setItem('user', JSON.stringify(userInfo.uid));
-        // this.afAuth.authState.subscribe(async (user: any) => {
-        //   if (user) {
-        //     this.router.navigate(['']);
-        //   }
-        // });
+        this.getOne(userInfo.uid);
       })
       .catch((error: any) => {
         return error;
       });
   }
 
+  getOne(userId: string) {
+    const user = this.db
+      .object(`usuario/${userId}`)
+      .valueChanges()
+      .pipe(map((usuario) => (usuario as Usuario) || null))
+      .forEach((u) => {
+        localStorage.setItem('role', u.tipo);
+      });
+    console.log(user);
+  }
+
   public async signUp(email: string, password: string) {
     try {
-      const result = await this.afAuth
-        .createUserWithEmailAndPassword(email, password);
+      const result = await this.afAuth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
       return { type: 'ok', data: JSON.parse(JSON.stringify(result)) };
     } catch (error) {
       return { type: 'error', error: JSON.parse(JSON.stringify(error)) };
@@ -115,6 +106,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.afAuth.signOut().then(() => {
         localStorage.removeItem('user');
+        localStorage.removeItem('role');
         localStorage.removeItem('claims');
         if (redirect) this.router.navigate(['login']);
 

@@ -1,1 +1,50 @@
-<p>signup works!</p>
+<main class="container">
+    <section class="card__product">
+        <section class="title__box">
+            <h1>Cadastro</h1>
+        </section>
+        <div class="input__box">
+            <span class="p-float-label">
+                <input pInputText id="nome" [(ngModel)]="nome" />
+                <label for="nome">Nome</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="email" [(ngModel)]="email" />
+                <label for="email">Email</label>
+            </span>
+            <span class="p-float-label">
+                <input maxlength="11" pInputText id="cpf" [(ngModel)]="cpf" />
+                <label for="cpf">Cpf</label>
+            </span>
+            <span class="p-float-label">
+                <input (blur)="finderInformationsCep($event)" pInputText id="cep" [(ngModel)]="cep" />
+                <label for="cep">Cep</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="uf" [(ngModel)]="uf" />
+                <label for="uf">Estado</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="rua" [(ngModel)]="rua" />
+                <label for="rua">Rua</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="numero" [(ngModel)]="numero" />
+                <label for="numero">Numero</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="complemento" [(ngModel)]="complemento" />
+                <label for="complemento">Complemento</label>
+            </span>
+            <span class="p-float-label">
+                <input pInputText id="senha" [(ngModel)]="senha" />
+                <label for="senha">Senha</label>
+            </span>
+        </div>
+        <section class="buttons__box">
+            <span>Possui conta?<a style="margin-left: 4px;" routerLink="/signIn">Login</a></span>
+        </section>
+        <p-button label="Cadastrar" icon="pi pi-check" (onClick)="handleRegister()"></p-button>
+    </section>
+    <p-toast></p-toast>
+</main>

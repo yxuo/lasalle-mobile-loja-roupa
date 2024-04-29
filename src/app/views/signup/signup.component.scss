@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 60px);
+
+    .card__product {
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        border: 1.5px solid rgba(218, 211, 211, 0.685);
+        border-radius: 4px;
+        gap: 1rem;
+        box-shadow: -1px 0px 15px -6px rgba(0,0,0,0.75);
+    }
+
+    .buttons__box {
+        margin-top: 2rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title__box {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .list-all {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+
+    .input__box {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}

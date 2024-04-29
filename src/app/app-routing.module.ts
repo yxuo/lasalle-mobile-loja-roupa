@@ -6,6 +6,7 @@ import { SigninComponent } from './views/signin/signin.component';
 import { SignupComponent } from './views/signup/signup.component';
 import { InsertProductsComponent } from './components/insert-products/insert-products.component';
 import { InsertFornecedorComponent } from './components/insert-fornecedor/insert-fornecedor.component';
+import { FornecedorComponent } from './components/fornecedor/fornecedor.component';
 
 const routes: Routes = [
   { path: 'test', component: TestComponent },
@@ -14,11 +15,12 @@ const routes: Routes = [
   { path: 'signUp', component: SignupComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'products/insert', component: InsertProductsComponent },
+  { path: 'supplier', component: FornecedorComponent },
   { path: 'supplier/insert', component: InsertFornecedorComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
