@@ -33,7 +33,7 @@ export class InsertProductsComponent {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private messageService: MessageService,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
   ) {}
 
   ngOnInit(): void {

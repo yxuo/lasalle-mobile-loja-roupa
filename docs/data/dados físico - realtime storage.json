@@ -47,6 +47,7 @@
     },
     "usuario": {
         "04KyBqBnHegm20KUy7JSRNh6gpJ2": {
+            // email: cliente2@example.com
             "nome": "Gabriel",
             "tipo": "cliente",
             "cpf": "1234",
@@ -59,10 +60,12 @@
             }
         },
         "DmnZDHHkWPM18ImLVj54YdmxLgP2": {
+            // email: raphael.rivas@soulasalle.com.br
             "nome": "Pimenta",
             "tipo": "funcionario"
         },
         "VyyGyMj1M8WUCQ3kLIJSCkLxBcZ2": {
+            // email: raphaelrivasbra@gmail.com
             "nome": "Raphael",
             "tipo": "gerente"
         }

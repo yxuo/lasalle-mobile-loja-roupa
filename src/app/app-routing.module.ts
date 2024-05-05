@@ -7,6 +7,7 @@ import { SignupComponent } from './views/signup/signup.component';
 import { InsertProductsComponent } from './components/insert-products/insert-products.component';
 import { InsertFornecedorComponent } from './components/insert-fornecedor/insert-fornecedor.component';
 import { FornecedorComponent } from './components/fornecedor/fornecedor.component';
+import { RoleGuardService } from './services/auth/role-guard.service';
 
 const routes: Routes = [
   { path: 'test', component: TestComponent },
@@ -14,9 +15,24 @@ const routes: Routes = [
   { path: 'signIn', component: SigninComponent },
   { path: 'signUp', component: SignupComponent },
   { path: 'products', component: ProductsComponent },
-  { path: 'products/insert', component: InsertProductsComponent },
-  { path: 'supplier', component: FornecedorComponent },
-  { path: 'supplier/insert', component: InsertFornecedorComponent },
+  {
+    path: 'products/insert',
+    component: InsertProductsComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRoles: ['funcionario'] },
+  },
+  {
+    path: 'supplier',
+    component: FornecedorComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRoles: ['funcionario', 'gerente'] },
+  },
+  {
+    path: 'supplier/insert',
+    component: InsertFornecedorComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRoles: ['funcionario', 'gerente'] },
+  },
 ];
 
 @NgModule({

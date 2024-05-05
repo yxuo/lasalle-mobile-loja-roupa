@@ -4,11 +4,9 @@
         <h1>Fornecedores</h1>
 
         @if ((this.fornecedores || []).length>0) {
-        <div class="product-item" *ngFor="let fornecedor of fornecedores">
-            <h2>{{ fornecedor.nome }}</h2>
+        <div class="fornecedor-item" *ngFor="let fornecedor of fornecedoresObs | async">
+            <h2>Nome: {{ fornecedor.nome }}</h2>
             <p> CNPJ: {{ fornecedor.cnpj }}</p>
-            <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
-            <button (click)="deleteProduct(product.$key)">Delete</button> -->
         </div>
         }
         @else{
