@@ -8,10 +8,12 @@ import { InsertProductsComponent } from './components/insert-products/insert-pro
 import { InsertFornecedorComponent } from './components/insert-fornecedor/insert-fornecedor.component';
 import { FornecedorComponent } from './components/fornecedor/fornecedor.component';
 import { RoleGuardService } from './services/auth/role-guard.service';
+import { EditFornecedorComponent } from './components/edit-fornecedor/edit-fornecedor.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: 'test', component: TestComponent },
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: '', redirectTo: '/signIn', pathMatch: 'full' },
   { path: 'signIn', component: SigninComponent },
   { path: 'signUp', component: SignupComponent },
   { path: 'products', component: ProductsComponent },
@@ -28,10 +30,20 @@ const routes: Routes = [
     data: { expectedRoles: ['funcionario', 'gerente'] },
   },
   {
+    path: 'profile',
+    component: ProfileComponent
+  },
+  {
     path: 'supplier/insert',
     component: InsertFornecedorComponent,
     canActivate: [RoleGuardService],
-    data: { expectedRoles: ['funcionario', 'gerente'] },
+    data: { expectedRoles: ['funcionario','gerente'] },
+  },
+  {
+    path: 'supplier/edit',
+    component: EditFornecedorComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRoles: ['funcionario','gerente'] },
   },
 ];
 

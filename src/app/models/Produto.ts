@@ -10,6 +10,7 @@ export interface Produto {
 }
 
 export interface ProdutoObservable {
+  $key: string;
   nome: string;
   descricao: string;
   preco: number;

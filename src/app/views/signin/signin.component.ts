@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -18,7 +19,8 @@ export class SigninComponent {
   constructor(
     public authService: AuthService,
     public afAuth: AngularFireAuth,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router:Router
   ) {}
 
   sendLogin() {
@@ -33,6 +35,7 @@ export class SigninComponent {
           summary: 'Sucesso',
           detail: 'Logado com sucesso',
         });
+        this.router.navigate(['/products'])
       }
     } catch {
       this.messageService.add({

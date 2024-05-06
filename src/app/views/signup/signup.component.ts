@@ -7,6 +7,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { User } from 'firebase/auth';
 import { Endereco, TipoUsuario } from '../../models/Usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -29,7 +30,8 @@ export class SignupComponent {
   constructor(
     private afAuth: AngularFireAuth,
     private authService: AuthService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class SignupComponent {
       .createUserWithEmailAndPassword(email, password)
       .then(async (res) => {
         console.log(res.user);
-      await this.authService.login(this.email, this.senha);
+        await this.authService.login(this.email, this.senha);
         const endereco: Endereco | undefined =
           this.authRole === 'gerente'
             ? undefined
@@ -66,7 +68,7 @@ export class SignupComponent {
                 complemento: this.complemento,
                 rua: this.rua,
                 uf: this.uf,
-              }
+              };
         if (res.user !== null) {
           this.usuarioService.insert(res.user.uid, {
             cpf: this.cpf,
@@ -81,5 +83,6 @@ export class SignupComponent {
 
   handleRegister() {
     this.createUser(this.email, this.senha);
+    this.router.navigate(['/products']);
   }
 }

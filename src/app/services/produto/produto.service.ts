@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import {
   Produto,
   ProdutoObservable,
@@ -12,13 +12,20 @@ import {
   providedIn: 'root',
 })
 export class ProdutoService {
+  private productsSubject = new Subject<any>();
+  products$ = this.productsSubject.asObservable();
+
+  setProducts(value:any){
+    this.productsSubject.next(value)
+  }
+
   constructor(
     private db: AngularFireDatabase,
     private _sanitizer: DomSanitizer
   ) {}
 
   insert(product: Produto) {
-    console.log("INSERT PROD", product)
+    console.log('INSERT PROD', product);
     this.db
       .list('produto')
       .push(product)
@@ -70,6 +77,7 @@ export class ProdutoService {
       }
       // ProdutoHelpers
       helpers.push({
+        $key: ((produto as any)?.key as string) || '',
         nome: produto.nome,
         descricao: produto.descricao,
         idFornecedor: produto.idFornecedor,

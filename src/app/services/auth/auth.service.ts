@@ -58,6 +58,7 @@ export class AuthService {
       .then((result) => {
         const userInfo: any = result.user?.toJSON();
         localStorage.setItem('user', JSON.stringify(userInfo.uid));
+        console.log(userInfo);
         this.getOne(userInfo.uid);
       })
       .catch((error: any) => {
@@ -73,7 +74,6 @@ export class AuthService {
       .forEach((u) => {
         localStorage.setItem('role', u.tipo);
       });
-    console.log(user);
   }
 
   public async signUp(email: string, password: string) {

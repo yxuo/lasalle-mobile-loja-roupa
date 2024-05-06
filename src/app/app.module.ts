@@ -47,6 +47,7 @@ import { FornecedorComponent } from './components/fornecedor/fornecedor.componen
 import { InsertFornecedorComponent } from './components/insert-fornecedor/insert-fornecedor.component';
 import { InsertProductsComponent } from './components/insert-products/insert-products.component';
 import { ListSalesComponent } from './components/list-sales/list-sales.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ListSalesComponent } from './components/list-sales/list-sales.component
     FornecedorComponent,
     EditFornecedorComponent,
     ListSalesComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

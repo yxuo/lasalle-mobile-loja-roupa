@@ -38,9 +38,8 @@
             ></p-button>
           </a>
           }
-          <a>
+          <a routerLink="/profile">
             <p-button
-              (onClick)="handleLogout()"
               label="Perfil"
               [text]="true"
               [raised]="true"
@@ -81,5 +80,9 @@
       </ng-template>
     </p-sidebar>
   </div>
+  <!-- <i id="cart-button" class="pi pi-shopping-cart" (click)="showCartItems()"></i>
+  <section class="cart-box">
+    
+  </section> -->
   <i class="pi pi-bars" id="menu__icon" (click)="toggleSidebar()"></i>
 </main>

@@ -16,7 +16,8 @@ export class InsertFornecedorComponent {
   addFornecedor() {
     const newFornecedor: Fornecedor = {
       nome: this.fornecedorNome,
+      cnpj: this.fornecedorCnpj,
     };
-    this.fornecedorService.insert(this.fornecedorCnpj, newFornecedor);
+    this.fornecedorService.insert(newFornecedor);
   }
 }

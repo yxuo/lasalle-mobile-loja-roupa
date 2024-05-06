@@ -1,16 +1,16 @@
-export interface Usuario {
-  nome: string;
-  cpf: string;
-  tipo: TipoUsuario;
+export class Usuario {
+  nome: string = '';
+  cpf: string = '';
+  tipo: TipoUsuario = 'cliente';
   endereco?: Endereco;
 }
 
-export interface Endereco {
-  cep: string;
-  complemento: string;
-  numero: number;
-  rua: string;
-  uf: string;
+export class Endereco {
+  cep: string = '';
+  complemento: string = '';
+  numero: number = 0;
+  rua: string = '';
+  uf: string = '';
 }
 
 export type TipoUsuario = 'cliente' | 'funcionario' | 'gerente';

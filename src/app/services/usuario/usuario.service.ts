@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { Fornecedor } from '../../models/Fornecedor';
 import { Usuario } from '../../models/Usuario';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, Subject, filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-  private userSubject = new Subject<string>();
+  private userSubject = new Subject<Usuario>();
   user$ = this.userSubject.asObservable();
 
   constructor(private db: AngularFireDatabase) {}
 
-  setFornecedor(value: string): void {
+  setUser(value: Usuario): void {
     this.userSubject.next(value);
   }
 
@@ -43,13 +43,16 @@ export class UsuarioService {
       );
   }
 
-  getOne(userId: string): Observable<Usuario | null> {
+  getOne(userId: string) {
     return this.db
       .object(`usuario/${userId}`)
       .valueChanges()
-      .pipe(
-        map((usuario) => (usuario as Usuario) || null)
-      );
+      .pipe(map((usuario) => (usuario as Usuario) || null))
+      .forEach((u) => u).then((usuario) =>{console.log('piru do: ',usuario)}).catch((err) =>{console.error(err)});
   }
 
+  getOneTeste(userId: string) {
+    console.log(userId);
+    return this.db.object(`usuario/${userId}`);
+  }
 }

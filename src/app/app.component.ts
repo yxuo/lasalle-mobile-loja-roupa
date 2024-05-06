@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Database } from '@angular/fire/database';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -11,37 +11,21 @@ import { MenuItem, PrimeNGConfig } from 'primeng/api';
 export class AppComponent {
   title = 'frontend';
   items: MenuItem[] | undefined;
+  showNavbar = false;
   constructor(
     private primengConfig: PrimeNGConfig,
     private db: Database,
     private router: Router
-  ) {}
-
-  checkEmployee(): boolean {
-    if (localStorage.getItem('role') !== undefined) {
-      const role = localStorage.getItem('role');
-      return role === 'funcionario';
-    }
-    return false;
-  }
-
-  checkAdmin(): boolean {
-    if (localStorage.getItem('role') !== undefined) {
-      const role = localStorage.getItem('role');
-      return role === 'gerente';
-    }
-    return false;
-  }
-
-  checkCustomer(): boolean {
-    if (localStorage.getItem('role') !== undefined) {
-      const role = localStorage.getItem('role');
-      return role === 'cliente';
-    }
-    return false;
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showNavbar = (event.url === '/signIn' || event.url === '/signUp');
+      }
+    });
   }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+    console.log(this.showNavbar)
   }
 }

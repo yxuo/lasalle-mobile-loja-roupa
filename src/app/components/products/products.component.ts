@@ -12,6 +12,7 @@ import { FornecedorService } from '../../services/fornecedor/fornecedor.service'
 import { FornecedorObs } from '../../models/Fornecedor';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { HttpClient } from '@angular/common/http';
+import { Cart } from '../../interfaces/cart.class';
 
 @Component({
   selector: 'app-products',
@@ -31,14 +32,20 @@ export class ProductsComponent {
   searchFilter: ProdutoObservable[] | undefined;
   filtro: ProdutoObservable[] = [];
   fornecedores: FornecedorObs[] = [];
-
+  cartItems: Cart[] = [];
+  productsCarts: any[] = [];
   products$: Observable<ProdutoObservable[]>;
+  amount:number=0;
 
   ngOnInit(): void {
+    this.produtoService.products$.subscribe((data) => {
+      this.productsCarts = data;
+    });
     this.fornecedorService.fornecedor$.subscribe((fornecedores) => {
       this.fornecedores = fornecedores;
     });
     this.loadProducts();
+    this.cartItems = Cart.loadLocalStorage();
   }
 
   constructor(
@@ -54,10 +61,23 @@ export class ProductsComponent {
     };
   }
 
+  addCartUnit(produto: ProdutoObservable) {
+    const produtoItem = this.cartItems.filter(i => i.produtoKey === produto.$key)[0];    
+    produtoItem.amount += 1;
+  }
+  
+  removeCartUnit(produto: ProdutoObservable) {
+    const produtoItem = this.cartItems.filter(i => i.produtoKey === produto.$key)[0];
+    produtoItem.amount -= 1;
+    if (produtoItem.amount <= 0) {
+      this.cartItems = this.cartItems.filter(i => i.produtoKey !== produto.$key);
+    }
+    Cart.saveLocalStorage(this.cartItems);
+  }
+
   onFileChange(event: any) {
     this.newProdutoImagensFile = event.target.files;
     this.newProdutoImagensBase64 = [];
-    console.log('Upload file');
     if (this.newProdutoImagensFile) {
       for (let i = 0; i < this.newProdutoImagensFile.length; i++) {
         const file = this.newProdutoImagensFile[i];

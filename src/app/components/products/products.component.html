@@ -1,7 +1,5 @@
 <main class="container">
 
-    
-
     <section class="list-all">
         <h1>Produtos</h1>
         <span class="p-input-icon-left">
@@ -21,8 +19,8 @@
                     }
                 </div>
             </div>
-            <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
-            <button (click)="deleteProduct(product.$key)">Delete</button> -->
+            <!-- <button (click)="addCartUnit(product)">Adicionar ao carrinho</button>
+            <button (click)="removeCartUnit(product)">Remover do carrinho</button> -->
         </div>
         }
         @else if(this.searchFilter===undefined){
@@ -30,8 +28,6 @@
             <h2>{{ product.nome }}</h2>
             <p>{{ product.descricao }}</p>
             <p>Price: R$ {{ product.preco }}</p>
-            <!-- <button (click)="updateProduct(product.$key, { name: 'Updated Product' })">Update</button>
-            <button (click)="deleteProduct(product.$key)">Delete</button> -->
         </div>
         }
         @else{

@@ -22,16 +22,52 @@ export class FornecedorService {
 
   setFornecedor(value: any): void {
     this.fornecedorSubject.next(value);
-    console.log(this.fornecedorSubject);
   }
 
-  insert(cnpj: string, fornecedor: Fornecedor) {
+  insert(fornecedor: Fornecedor) {
     console.log('INSERT PROD', fornecedor);
     this.db
-      .object(`fornecedor/${cnpj}`)
-      .set(fornecedor)
+      .list('fornecedor')
+      .push(fornecedor)
       .then((result: any) => {
         console.log('Inserir fornecedor:', result);
       });
+  }
+
+  update(id: string, fornecedor:Fornecedor) {
+    console.log('id',id)
+    this.db
+      .list('fornecedor')
+      .update(id, fornecedor)
+      .catch((error: any) => {
+        console.log(error);
+      });
+    return this.list();
+  }
+
+  delete(cnpj: string) {
+    this.db
+      .object(`fornecedor/${cnpj}`)
+      .remove()
+      .catch((error: any) => {
+        console.log(error);
+      });
+  }
+
+  list() {
+    return this.db
+      .list('fornecedor')
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((c) => ({
+            key: c.payload.key,
+            ...{
+              ...(c.payload.val() as FornecedorObs),
+              cnpj: String(c.payload.key),
+            },
+          }));
+        })
+      );
   }
 }
