@@ -5,33 +5,9 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
-import { firebase } from '../../firebase/config';
+// import { firebase } from '../../firebase/config';
 
 export default function HomeProdutos() {
-  const [data, setData] = useState<any[]>([]);
-  const getDataFromFirebase = async () => {
-    try { 
-      // Reference the specific collection or document you want to fetch data from
-      const usersRef = firebase.firestore().collection('produto'); // Replace with your collection name
-      const snapshot = await usersRef.get();
-
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }
-
-      const allData: any[] = [];
-      snapshot.forEach((doc: any) => {
-        allData.push(doc.data());
-      });
-
-      // Update state with retrieved data
-      setData(allData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
 
   return (
     <ParallaxScrollView
@@ -44,12 +20,6 @@ export default function HomeProdutos() {
       }>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Produtos</ThemedText>
-        <Button title="Get Data from Firebase" onPress={getDataFromFirebase} />
-        {data.length &&
-          <View>
-            {data.map(item => <Text key={item?.key}> {item.nome}</Text>)}
-          </View>
-        }
       </ThemedView>
     </ParallaxScrollView>
   );
