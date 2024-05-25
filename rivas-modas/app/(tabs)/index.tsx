@@ -1,13 +1,11 @@
-import { Image, StyleSheet, Platform, Button, View, Text } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useState } from 'react';
 // import { firebase } from '../../firebase/config';
 
-export default function HomeProdutos() {
+export default function IndexProdutos() {
 
   return (
     <ParallaxScrollView
