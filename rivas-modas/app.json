@@ -13,13 +13,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "googleServicesfile": "./GoogleService-Info.plist"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yxuo.rivasmodas"
     },
     "web": {
       "bundler": "metro",
@@ -28,7 +31,6 @@
     },
     "plugins": [
       "expo-router",
-      "@react-native-firebase/app",
       "@react-native-firebase/app",
       [
         "expo-build-properties",

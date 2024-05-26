@@ -1,11 +1,34 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-// import { firebase } from '../../firebase/config';
+import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
+import { useEffect, useState } from 'react';
+import { Produto } from '@/models/Produto';
+import db from '@react-native-firebase/database'
 
 export default function IndexProdutos() {
+
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [limit, setLimit] = useState(5);
+  const onProdutoChange = (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
+    if (snapshot.val()) {
+      const values: Produto[] = Object.values(snapshot.val());
+      setProdutos(values);
+    }
+  }
+
+  useEffect(() => {
+    const refPath = '/produto';
+    db()
+      .ref(refPath)
+      .orderByKey()
+      .on("value", onProdutoChange)
+
+    return () => db().ref(refPath).off("value", onProdutoChange);
+  });
 
   return (
     <ParallaxScrollView
@@ -19,6 +42,12 @@ export default function IndexProdutos() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Produtos</ThemedText>
       </ThemedView>
+      <Text>Hello</Text>
+      {/* {produtos.length &&
+        <View>
+          {produtos.map(item => <Text key={item?.key}> {item.nome || ''}</Text>)}
+        </View>
+      } */}
     </ParallaxScrollView>
   );
 }
