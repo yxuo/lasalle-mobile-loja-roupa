@@ -1,35 +1,11 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Platform } from 'react-native';
 
+import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
-import { useEffect, useState } from 'react';
-import { Produto } from '@/models/Produto';
-import db from '@react-native-firebase/database'
 
-export default function IndexProdutos() {
-
-  const [produtos, setProdutos] = useState<Produto[]>([]);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [limit, setLimit] = useState(5);
-  const onProdutoChange = (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
-    if (snapshot.val()) {
-      const values: Produto[] = Object.values(snapshot.val());
-      setProdutos(values);
-    }
-  }
-
-  useEffect(() => {
-    const refPath = '/produto';
-    db()
-      .ref(refPath)
-      .orderByKey()
-      .on("value", onProdutoChange)
-
-    return () => db().ref(refPath).off("value", onProdutoChange);
-  });
-
+export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -40,14 +16,36 @@ export default function IndexProdutos() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Produtos</ThemedText>
+        <ThemedText type="title">Welcome!</ThemedText>
+        <HelloWave />
       </ThemedView>
-      <Text>Hello</Text>
-      {/* {produtos.length &&
-        <View>
-          {produtos.map(item => <Text key={item?.key}> {item.nome || ''}</Text>)}
-        </View>
-      } */}
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <ThemedText>
+          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
+          Press{' '}
+          <ThemedText type="defaultSemiBold">
+            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
+          </ThemedText>{' '}
+          to open developer tools.
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+        <ThemedText>
+          Tap the Explore tab to learn more about what's included in this starter app.
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText>
+          When you're ready, run{' '}
+          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
+          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
+          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
+          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+        </ThemedText>
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
