@@ -6,10 +6,11 @@ import { ThemedView } from '@/components/ThemedView';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
 import { useEffect, useState } from 'react';
 import { Produto } from '@/models/Produto';
-import db from '@react-native-firebase/database'
+import firebase from '../../firebase/config';
 
 export default function IndexProdutos() {
 
+  const dbRef = firebase.database();
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [limit, setLimit] = useState(5);
@@ -22,12 +23,11 @@ export default function IndexProdutos() {
 
   useEffect(() => {
     const refPath = '/produto';
-    db()
-      .ref(refPath)
+    dbRef.ref(refPath)
       .orderByKey()
       .on("value", onProdutoChange)
 
-    return () => db().ref(refPath).off("value", onProdutoChange);
+    return () => dbRef.ref(refPath).off("value", onProdutoChange);
   });
 
   return (
