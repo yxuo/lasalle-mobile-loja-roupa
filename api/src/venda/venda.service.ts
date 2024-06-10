@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { DeepPartial, Repository } from 'typeorm';
 import { Venda } from './venda.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class VendaService {
   constructor(
+    @InjectRepository(Venda)
     private vendaRepository: Repository<Venda>,
   ) { }
   async findAll() {

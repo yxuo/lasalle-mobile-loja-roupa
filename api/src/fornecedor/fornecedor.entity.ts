@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Fornecedor {
@@ -15,7 +15,7 @@ export class Fornecedor {
   preco: number;
 
   @Column()
-  imagens: string[];
+  imagens: string;
 
   @Column()
   sku: string;

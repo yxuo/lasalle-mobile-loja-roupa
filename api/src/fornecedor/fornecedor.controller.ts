@@ -1,23 +1,22 @@
 import { Controller } from '@nestjs/common';
-import { DeepPartial, Repository } from 'typeorm';
-import { Fornecedor } from './fornecedor.entity';
 import { CreateFornecedorDto } from './dto/create-fornecedor.dto';
+import { FornecedorService } from './fornecedor.service';
 
 @Controller('fornecedor')
 export class FornecedorController {
   constructor(
-    private fornecedorRepository: Repository<Fornecedor>,
+    private fornecedorService: FornecedorService,
   ) { }
 
   async findAll() {
-    return await this.fornecedorRepository.find();
+    return await this.fornecedorService.getAll();
   }
 
   async findOne(id: number) {
-    return await this.fornecedorRepository.findOneBy({ id });
+    return await this.fornecedorService.findOne(id);
   }
 
   async save(dto: CreateFornecedorDto) {
-    return await this.fornecedorRepository.save(dto);
+    return await this.fornecedorService.save(dto);
   }
 }

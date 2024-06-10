@@ -1,5 +1,5 @@
-import { Fornecedor } from "src/fornecedor/fornecedor.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Fornecedor } from 'src/fornecedor/fornecedor.entity';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Produto {
@@ -16,7 +16,7 @@ export class Produto {
   preco: number;
 
   @Column()
-  imagens: string[];
+  imagens: string;
 
   @Column()
   sku: string;
@@ -26,5 +26,4 @@ export class Produto {
 
   @ManyToOne(() => Fornecedor, { eager: true })
   fornecedor: Fornecedor;
-
 }
