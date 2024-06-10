@@ -1,12 +1,32 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Exclude } from 'class-transformer';
+import { Role } from 'src/roles/entities/role.entity';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { ClienteStatusEnum } from './enums/cliente-status.enum';
 
 @Entity()
 export class Cliente {
   @PrimaryColumn()
   id: number;
 
+  @ManyToOne(() => Role)
+  role: Role;
+
+  @Column({ nullable: true })
+  @Exclude({ toPlainOnly: true })
+  password: string;
+
+  @Column({ nullable: true })
+  @Exclude({ toPlainOnly: true })
+  hash: string;
+
+  @Column()
+  status: ClienteStatusEnum;
+
   @Column()
   nome: string;
+
+  @Column()
+  email: string;
 
   @Column()
   cpf: string;
