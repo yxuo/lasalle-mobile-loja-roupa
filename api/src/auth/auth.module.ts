@@ -6,23 +6,16 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AnonymousStrategy } from './strategies/anonymous.strategy';
-import { UsersModule } from 'src/users/users.module';
-import { ForgotModule } from 'src/forgot/forgot.module';
-import { MailModule } from 'src/mail/mail.module';
-import { IsExist } from 'src/utils/validators/is-exists.validator';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
-import { IsValidBankCodeConstraint } from 'src/banks/validators/is-valid-bank-code.validator';
-import { MailHistoryModule } from 'src/mail-history/mail-history.module';
+import { ClienteModule } from 'src/cliente/cliente.module';
 
 @Module({
   imports: [
-    UsersModule,
-    ForgotModule,
+    ClienteModule,
     PassportModule,
-    MailModule,
-    MailHistoryModule,
+    ConfigModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, ClienteModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('auth.secret'),
@@ -34,12 +27,10 @@ import { MailHistoryModule } from 'src/mail-history/mail-history.module';
   ],
   controllers: [AuthController],
   providers: [
-    IsExist,
     IsNotExist,
     AuthService,
     JwtStrategy,
     AnonymousStrategy,
-    IsValidBankCodeConstraint,
   ],
   exports: [AuthService],
 })

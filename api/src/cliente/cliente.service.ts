@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { DeepPartial, FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { Cliente } from './cliente.entity';
 import { WhereEntity } from 'src/utils/where-entity.type';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ClienteService {
-  constructor(private clienteRepository: Repository<Cliente>) {}
+  constructor(
+    @InjectRepository(Cliente)
+    private clienteRepository: Repository<Cliente>
+  ) { }
   async findAll() {
     return await this.clienteRepository.find();
   }

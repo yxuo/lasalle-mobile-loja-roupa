@@ -19,7 +19,7 @@ export class ClienteController {
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Cliente> {
-    return this.clienteService.findOne(id);
+    return this.clienteService.findOneBy({ id });
   }
 }
 

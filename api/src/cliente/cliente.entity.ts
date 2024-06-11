@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Role } from 'src/roles/entities/role.entity';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
@@ -45,4 +46,9 @@ export class Cliente {
 
   @Column()
   dataExclusao: Date;
+
+  public static async hashPassword(password: string) {
+    const salt = await bcrypt.genSalt();
+    return await bcrypt.hash(password, salt);
+  }
 }
