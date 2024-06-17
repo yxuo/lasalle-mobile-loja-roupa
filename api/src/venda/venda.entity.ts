@@ -1,8 +1,13 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Venda {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -13,4 +18,7 @@ export class Venda {
 
   @Column()
   status: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

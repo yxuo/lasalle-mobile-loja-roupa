@@ -5,7 +5,7 @@ import { Venda } from './venda.entity';
 
 @Controller('venda')
 export class VendaController {
-  constructor(private readonly vendaService: VendaService) { }
+  constructor(private readonly vendaService: VendaService) {}
 
   @Post()
   async create(@Body() dto: CreateVendaDto) {
@@ -19,7 +19,6 @@ export class VendaController {
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Venda> {
-    return this.vendaService.findOne(id);
+    return this.vendaService.findOneBy(id);
   }
 }
-

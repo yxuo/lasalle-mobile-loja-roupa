@@ -24,5 +24,12 @@
       "url": "http://localhost:4200",
       "webRoot": "${workspaceRoot}"
     },
+    {
+      "command": "npm run start:debug",
+      "name": "start:debug",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/api/",
+    },
   ]
 }

@@ -1,19 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, MinLength, Validate } from 'class-validator';
+import { IsDateString, IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 import { lowerCaseTransformer } from 'src/utils/transformers/lower-case.transformer';
-import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
+import { IsCpfCnpj } from 'src/utils/validators/is-cpf-cnpj.validator';
 
 export class AuthRegisterLoginDto {
   @ApiProperty({ example: 'test1@example.com' })
   @Transform(lowerCaseTransformer)
-  @Validate(IsNotExist, ['User'], {
-    message: 'emailAlreadyExists',
-  })
   @IsEmail()
   email: string;
 
+  @ApiProperty({ example: 'secret' })
   @ApiProperty()
   @MinLength(6)
   password: string;
+
+  @ApiProperty({ example: 'Joao' })
+  @IsString()
+  nome: string;
+  
+  @ApiProperty({ example: '112223334' })
+  @IsCpfCnpj({ isCpf: true, mandatory: true, numeric: true })
+  cpf: string;
+  
+  @ApiProperty({ example: '2024-05-01' })
+  @IsDateString()
+  nascimento: Date;
+  
+  @ApiProperty({ example: '2024-05-01', required: false })
+  @IsOptional()
+  @IsString()
+  endereco: string;
 }

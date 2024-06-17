@@ -1,4 +1,5 @@
 export enum ClienteStatusEnum {
-  'criado' = 1,
-  'registrado' = 2,
+  criado = 1,
+  registrado = 2,
 }
+ 

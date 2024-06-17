@@ -13,6 +13,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Cliente } from 'src/cliente/cliente.entity';
+import { TipoClienteEnum } from 'src/tipo-cliente/tipo-cliente.enum';
+import { IRequestWithUser } from 'src/utils/types/request.type';
 import { LoginResponseType } from '../utils/types/auth/login-response.type';
 import { Nullable } from '../utils/types/nullable.type';
 import { AuthService } from './auth.service';
@@ -20,7 +23,6 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 import { AuthResetPasswordDto } from './dto/auth-reset-password.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
-import { Cliente } from 'src/cliente/cliente.entity';
 
 @ApiTags('Auth')
 @Controller({
@@ -30,16 +32,14 @@ import { Cliente } from 'src/cliente/cliente.entity';
 export class AuthController {
   private logger: Logger = new Logger('AuthController', { timestamp: true });
 
-  constructor(
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @SerializeOptions({
     groups: ['me'],
   })
   @Post('email/login')
   @HttpCode(HttpStatus.OK)
-  public login(
+  public postEmailLogin(
     @Body() loginDto: AuthEmailLoginDto,
   ): Promise<LoginResponseType> {
     return this.authService.validateLogin(loginDto, false);
@@ -56,23 +56,39 @@ export class AuthController {
     return this.authService.validateLogin(loginDTO, true);
   }
 
+  /**
+   * Regras:
+   * - Usuários não existentes podem criar a si mesmos como cliente
+   * - Gerentes podem cadastrar funcionários
+   * - Gerentes são cadastrados manualmente
+   */
+  @Post('cliente/register')
+  @HttpCode(HttpStatus.OK)
+  async postClienteRegister(
+    @Body() createUserDto: AuthRegisterLoginDto,
+  ): Promise<void | object> {
+    return await this.authService.registerCliente(createUserDto);
+  }
+
+  /**
+   * Regras:
+   * - Usuários não existentes podem criar a si mesmos como cliente
+   * - Gerentes podem cadastrar funcionários
+   * - Gerentes são cadastrados manualmente
+   */
+  @Post('funcionario/register')
   @SerializeOptions({
     groups: ['me'],
   })
-  @Post('finan/email/login')
+  @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
-  public finanLogin(
-    @Body() loginDTO: AuthEmailLoginDto,
-  ): Promise<LoginResponseType> {
-    return this.authService.validateLogin(loginDTO, true);
-  }
-
-  @Post('email/register')
-  @HttpCode(HttpStatus.OK)
-  async register(
+  async postEmailRegister(
     @Body() createUserDto: AuthRegisterLoginDto,
   ): Promise<void | object> {
-    return await this.authService.register(createUserDto);
+    return await this.authService.register(
+      createUserDto,
+      TipoClienteEnum.funcionario,
+    );
   }
 
   @Post('reset/password')
@@ -91,7 +107,7 @@ export class AuthController {
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
-  public me(@Request() request): Promise<Nullable<Cliente>> {
+  public me(@Request() request: IRequestWithUser): Promise<Nullable<Cliente>> {
     return this.authService.me(request.user);
   }
 

@@ -1,12 +1,11 @@
 import { Fornecedor } from 'src/fornecedor/fornecedor.entity';
-import { Produto } from 'src/produto/produto.entity';
 
-export class GetProdutoDto implements Produto {
+export class GetProdutoDto {
   id: number;
   nome: string;
   descricao: string;
   preco: number;
-  imagens: string;
+  imagens: string[];
   sku: string;
   ativo: boolean;
   fornecedor: Fornecedor;

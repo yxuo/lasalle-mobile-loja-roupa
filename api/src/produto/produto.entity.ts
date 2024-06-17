@@ -1,9 +1,18 @@
 import { Fornecedor } from 'src/fornecedor/fornecedor.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  AfterLoad,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity()
 export class Produto {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -15,8 +24,8 @@ export class Produto {
   @Column()
   preco: number;
 
-  @Column()
-  imagens: string;
+  @Column({ type: String })
+  imagens: string[];
 
   @Column()
   sku: string;
@@ -26,4 +35,20 @@ export class Produto {
 
   @ManyToOne(() => Fornecedor, { eager: true })
   fornecedor: Fornecedor;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @BeforeInsert()
+  beforeInsert() {
+    (this.imagens as any) = this.imagens.join(',');
+  }
+
+  @AfterLoad()
+  afterLoad() {
+    this.imagens = (this.imagens as unknown as string).split(',');
+  }
 }

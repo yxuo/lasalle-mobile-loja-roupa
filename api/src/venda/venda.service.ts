@@ -8,12 +8,12 @@ export class VendaService {
   constructor(
     @InjectRepository(Venda)
     private vendaRepository: Repository<Venda>,
-  ) { }
+  ) {}
   async findAll() {
     return await this.vendaRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOneBy(id: number) {
     return await this.vendaRepository.findOneBy({ id });
   }
 
