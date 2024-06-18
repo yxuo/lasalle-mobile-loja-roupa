@@ -20,7 +20,8 @@ import { LoginResponseType } from '../utils/types/auth/login-response.type';
 import { Nullable } from '../utils/types/nullable.type';
 import { AuthService } from './auth.service';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
+import { AuthRegisterClienteDto } from './dto/auth-register-cliente.dto';
+import { AuthRegisterFuncionarioDto } from './dto/auth-register-funcionario.dto';
 import { AuthResetPasswordDto } from './dto/auth-reset-password.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 
@@ -34,29 +35,23 @@ export class AuthController {
 
   constructor(private readonly authService: AuthService) {}
 
-  @SerializeOptions({
-    groups: ['me'],
-  })
+  /**
+   * Logar usando email/senha
+   *
+   * Serve para admin,cliente, funcionário ou gerente.
+   * Não há necessidade de criar 4 endpoints se o login e a validação são os mesmos.
+   */
   @Post('email/login')
   @HttpCode(HttpStatus.OK)
   public postEmailLogin(
-    @Body() loginDto: AuthEmailLoginDto,
-  ): Promise<LoginResponseType> {
-    return this.authService.validateLogin(loginDto, false);
-  }
-
-  @SerializeOptions({
-    groups: ['me'],
-  })
-  @Post('admin/email/login')
-  @HttpCode(HttpStatus.OK)
-  public adminLogin(
     @Body() loginDTO: AuthEmailLoginDto,
   ): Promise<LoginResponseType> {
-    return this.authService.validateLogin(loginDTO, true);
+    return this.authService.validateLogin(loginDTO);
   }
 
   /**
+   * Logar como cliente
+   *
    * Regras:
    * - Usuários não existentes podem criar a si mesmos como cliente
    * - Gerentes podem cadastrar funcionários
@@ -65,25 +60,24 @@ export class AuthController {
   @Post('cliente/register')
   @HttpCode(HttpStatus.OK)
   async postClienteRegister(
-    @Body() createUserDto: AuthRegisterLoginDto,
+    @Body() createUserDto: AuthRegisterClienteDto,
   ): Promise<void | object> {
     return await this.authService.registerCliente(createUserDto);
   }
 
   /**
+   * Logar como funcionário
+   *
    * Regras:
    * - Usuários não existentes podem criar a si mesmos como cliente
    * - Gerentes podem cadastrar funcionários
    * - Gerentes são cadastrados manualmente
+   * - Funcionários também devem preencher o CPF, para fins de registro apenas.
    */
   @Post('funcionario/register')
-  @SerializeOptions({
-    groups: ['me'],
-  })
-  @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
-  async postEmailRegister(
-    @Body() createUserDto: AuthRegisterLoginDto,
+  async postFuncionarioRegister(
+    @Body() createUserDto: AuthRegisterFuncionarioDto,
   ): Promise<void | object> {
     return await this.authService.register(
       createUserDto,

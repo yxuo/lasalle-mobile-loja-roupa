@@ -20,6 +20,18 @@ export class ClienteSeedDataService {
   async getData(): Promise<IClienteSeedData[]> {
     return [
       {
+        role: { id: TipoClienteEnum.admin },
+        password: await Cliente.hashPassword('secret'),
+        hash: '',
+        status: ClienteStatusEnum.criado,
+        nome: 'Ademar',
+        email: 'admin@example.com',
+        cpf: '',
+        nascimento: new Date('1999-03-01'),
+        endereco: '',
+        ativo: true,
+      },
+      {
         role: { id: TipoClienteEnum.cliente },
         password: await Cliente.hashPassword('secret'),
         hash: '',

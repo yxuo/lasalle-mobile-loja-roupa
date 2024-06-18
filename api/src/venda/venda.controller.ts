@@ -2,8 +2,13 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { VendaService } from './venda.service';
 import { CreateVendaDto } from './dto/create-venda.dto';
 import { Venda } from './venda.entity';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('venda')
+@ApiTags('Venda')
+@Controller({
+  path: 'venda',
+  version: 'v1',
+})
 export class VendaController {
   constructor(private readonly vendaService: VendaService) {}
 

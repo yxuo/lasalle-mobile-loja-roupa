@@ -3,8 +3,13 @@ import { CreateClienteDto } from './dto/create-cliente.dto';
 import { Venda } from 'src/venda/venda.entity';
 import { ClienteService } from './cliente.service';
 import { Cliente } from './cliente.entity';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('cliente')
+@ApiTags('Cliente')
+@Controller({
+  path: 'cliente',
+  version: 'v1',
+})
 export class ClienteController {
   constructor(private readonly ClienteService: ClienteService) {}
 

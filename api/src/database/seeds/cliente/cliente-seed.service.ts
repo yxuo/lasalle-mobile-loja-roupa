@@ -72,9 +72,9 @@ export class ClienteSeedService {
   }
 
   async generateHash(): Promise<string> {
-    let hash = await Cliente.generateHash();
+    let hash = Cliente.generateHash();
     while (await this.clienteSeedRepository.findOne({ where: { hash } })) {
-      hash = await Cliente.generateHash();
+      hash = Cliente.generateHash();
     }
     return hash;
   }

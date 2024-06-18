@@ -2,10 +2,16 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ItemVendaService } from './item-venda.service';
 import { CreateProdutoDto } from './dto/create-item-venda.dto';
 import { ItemVenda } from './item-venda.entity';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('item-venda')
+
+@ApiTags('ItemVenda')
+@Controller({
+  path: 'item-venda',
+  version: 'v1',
+})
 export class ItemVendaController {
-  constructor(private readonly itemVendaService: ItemVendaService) { }
+  constructor(private readonly itemVendaService: ItemVendaService) {}
 
   @Post()
   async create(@Body() dto: CreateProdutoDto) {

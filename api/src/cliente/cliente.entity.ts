@@ -50,8 +50,8 @@ export class Cliente {
   @Column()
   nascimento: Date;
 
-  @Column()
-  endereco: string;
+  @Column({ nullable: true })
+  endereco: string | null;
 
   @DeleteDateColumn()
   dataExclusao?: Date;
@@ -70,7 +70,7 @@ export class Cliente {
     return await bcrypt.hash(password, salt);
   }
 
-  public static async generateHash(): Promise<string> {
+  public static generateHash(): string {
     let hash = crypto
       .createHash('sha256')
       .update(randomStringGenerator())

@@ -12,10 +12,11 @@ import { HttpStatusMessage } from 'src/utils/enums/http-status-message.enum';
 import { LoginResponseType } from '../utils/types/auth/login-response.type';
 import { Nullable } from '../utils/types/nullable.type';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
+import { AuthRegisterFuncionarioDto } from './dto/auth-register-funcionario.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { IncomingMessage } from 'http';
 import { IRequestUser, IRequestWithUser } from 'src/utils/types/request.type';
+import { DeepPartial } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -28,28 +29,22 @@ export class AuthService {
 
   async validateLogin(
     loginDto: AuthEmailLoginDto,
-    onlyAdmin: boolean,
+    expectedRoles?: TipoClienteEnum[],
   ): Promise<LoginResponseType> {
     const user = await this.clienteService.findOne({
       where: {
         email: loginDto.email,
       },
     });
-    const expectedRoles = onlyAdmin
-      ? [TipoClienteEnum.admin]
-      : [
-          TipoClienteEnum.funcionario,
-          TipoClienteEnum.gerente,
-          TipoClienteEnum.cliente,
-        ];
 
-    if (!user || (user?.tipo && !expectedRoles.includes(user.tipo.id))) {
+    const validateExpectedRoles =
+      !expectedRoles || !expectedRoles.includes(user.tipo.id);
+    if (!user || (user?.tipo && !validateExpectedRoles)) {
       throw new HttpException(
         {
           error: HttpStatusMessage.UNAUTHORIZED,
           details: {
             email: 'notFound',
-            onlyAdmin: onlyAdmin,
             expectedRoles: expectedRoles,
             role: user?.tipo,
           },
@@ -83,7 +78,7 @@ export class AuthService {
     return { token, user };
   }
 
-  async validateAuthRegisterLoginDto(dto: AuthRegisterLoginDto) {
+  async validateAuthRegisterLoginDto(dto: AuthRegisterFuncionarioDto) {
     const existing = await this.clienteService.findOneBy({ email: dto.email });
     if (existing) {
       throw new HttpException(
@@ -93,13 +88,13 @@ export class AuthService {
     }
   }
 
-  async registerCliente(dto: AuthRegisterLoginDto) {
+  async registerCliente(dto: AuthRegisterFuncionarioDto) {
     this.validateAuthRegisterLoginDto(dto);
     return await this.register(dto, TipoClienteEnum.cliente);
   }
 
   async registerFuncionario(
-    dto: AuthRegisterLoginDto,
+    dto: AuthRegisterFuncionarioDto,
     request?: IRequestWithUser,
   ) {
     this.validateAuthRegisterLoginDto(dto);
@@ -111,22 +106,16 @@ export class AuthService {
   }
 
   async register(
-    dto: AuthRegisterLoginDto,
+    dto: AuthRegisterFuncionarioDto,
     tipo: TipoClienteEnum,
   ): Promise<void | object> {
     // Gerar hash único
-    let hash = crypto
-      .createHash('sha256')
-      .update(randomStringGenerator())
-      .digest('hex');
+    let hash = Cliente.generateHash();
     while (await this.clienteService.findOneBy({ hash })) {
-      hash = crypto
-        .createHash('sha256')
-        .update(randomStringGenerator())
-        .digest('hex');
+      hash = Cliente.generateHash();
     }
 
-    await this.clienteService.save({
+    const newCliente: DeepPartial<Cliente> = {
       ...dto,
       email: dto.email,
       tipo: {
@@ -135,7 +124,8 @@ export class AuthService {
       status: ClienteStatusEnum.criado,
       hash,
       password: await Cliente.hashPassword(dto.password),
-    });
+    };
+    await this.clienteService.save(newCliente);
   }
 
   validateRegisterFuncionario(cliente: Cliente) {

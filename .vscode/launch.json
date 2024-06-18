@@ -3,6 +3,89 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "npm run start:debug",
+      "name": "NestJS: debug",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/api/",
+    },
+    {
+      "name": "Jest test: Arquivo Atual",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "--runInBand"
+      ],
+      "cwd": "${fileDirname}",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/api/node_modules/jest/bin/jest.js",
+        "${fileBasenameNoExtension}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // "attachSimplePort": 9230,
+    },
+    {
+      "name": "Jest test: Teste específico",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "--runInBand"
+      ],
+      "cwd": "${fileDirname}",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/api/node_modules/jest/bin/jest.js",
+        "${fileBasenameNoExtension}",
+        "--testNamePattern",
+        "\".*${selectedText}\""
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // "attachSimplePort": 9231,
+    },
+    {
+      "name": "Jest e2e: Arquivo Atual",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "--runInBand",
+      ],
+      "cwd": "${workspaceFolder}/api",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/api/node_modules/jest/bin/jest.js",
+        "--config",
+        "${workspaceFolder}/api/test/jest-e2e.json",
+        "${command:extension.commandvariable.file.relativeFilePosix}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // "attachSimplePort": 9232,
+    },
+    {
+      "name": "Jest e2e: Teste específico",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "--runInBand",
+      ],
+      "cwd": "${workspaceFolder}/api",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/api/node_modules/jest/bin/jest.js",
+        "--config",
+        "${workspaceFolder}/api/test/jest-e2e.json",
+        "${command:extension.commandvariable.file.relativeFilePosix}",
+        "--testNamePattern",
+        "\".*${selectedText}\""
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // "attachSimplePort": 9233,
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
@@ -23,13 +106,6 @@
       "request": "launch",
       "url": "http://localhost:4200",
       "webRoot": "${workspaceRoot}"
-    },
-    {
-      "command": "npm run start:debug",
-      "name": "start:debug",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceFolder}/api/",
     },
   ]
 }
