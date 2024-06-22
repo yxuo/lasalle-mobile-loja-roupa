@@ -20,7 +20,7 @@ export class ClienteSeedDataService {
   async getData(): Promise<IClienteSeedData[]> {
     return [
       {
-        role: { id: TipoClienteEnum.admin },
+        tipo: { id: TipoClienteEnum.admin },
         password: await Cliente.hashPassword('secret'),
         hash: '',
         status: ClienteStatusEnum.criado,
@@ -32,7 +32,7 @@ export class ClienteSeedDataService {
         ativo: true,
       },
       {
-        role: { id: TipoClienteEnum.cliente },
+        tipo: { id: TipoClienteEnum.cliente },
         password: await Cliente.hashPassword('secret'),
         hash: '',
         status: ClienteStatusEnum.criado,
@@ -44,7 +44,7 @@ export class ClienteSeedDataService {
         ativo: true,
       },
       {
-        role: { id: TipoClienteEnum.gerente },
+        tipo: { id: TipoClienteEnum.gerente },
         password: await Cliente.hashPassword('secret'),
         hash: '',
         status: ClienteStatusEnum.criado,
@@ -56,7 +56,7 @@ export class ClienteSeedDataService {
         ativo: true,
       },
       {
-        role: { id: TipoClienteEnum.funcionario },
+        tipo: { id: TipoClienteEnum.funcionario },
         password: await Cliente.hashPassword('secret'),
         hash: '',
         status: ClienteStatusEnum.criado,

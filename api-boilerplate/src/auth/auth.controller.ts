@@ -88,8 +88,8 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @Get('me')
   @UseGuards(AuthGuard('jwt'))
+  @Get('me')
   @ApiOkResponse({
     type: User,
   })

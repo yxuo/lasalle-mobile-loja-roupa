@@ -4,7 +4,7 @@ import { DeepPartial } from 'typeorm';
 
 export interface IClienteSeedData {
   id?: number;
-  role: DeepPartial<TipoCliente>;
+  tipo: DeepPartial<TipoCliente>;
   password: string;
   hash: string;
   status: ClienteStatusEnum;
